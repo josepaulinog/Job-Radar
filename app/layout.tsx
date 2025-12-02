@@ -7,6 +7,8 @@ import HelpModal from '@/components/HelpModal';
 import { useLocalStorage, useTheme } from '@/hooks/useLocalStorage';
 import './globals.css';
 
+import { Analytics } from "@vercel/analytics/react"
+
 export default function RootLayout({
   children,
 }: {
@@ -15,10 +17,7 @@ export default function RootLayout({
   const { theme, toggleTheme } = useTheme();
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  // Check API configuration
-  const [apiKey] = useLocalStorage('jobhunter_api_key', '');
-  const [cxId] = useLocalStorage('jobhunter_cx_id', '');
-  const apiConfigured = !!(apiKey && cxId);
+
 
   return (
     <html lang="en" data-theme={theme} suppressHydrationWarning>
@@ -28,12 +27,12 @@ export default function RootLayout({
       </head>
       <body>
         <Header
-          apiConfigured={apiConfigured}
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenHelp={() => setIsHelpOpen(true)}
         />
         {children}
+        <Analytics />
         <Footer />
         <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
       </body>

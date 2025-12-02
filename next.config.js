@@ -5,7 +5,10 @@ const nextConfig = {
   compress: true,
 
   // Performance optimizations
-  swcMinify: true,
+  // swcMinify is default in recent Next.js versions
+
+  // Server external packages
+  serverExternalPackages: ['gray-matter', 'esprima'],
 
   // Image optimization
   images: {
@@ -18,10 +21,6 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
       },
     ],
-  },
-
-  experimental: {
-    serverComponentsExternalPackages: ['gray-matter', 'esprima'],
   },
 
   // Security headers

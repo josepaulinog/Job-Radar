@@ -21,6 +21,30 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
     }
   });
 
+  // Listen for changes to this local storage key
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleStorageChange = (e: StorageEvent | CustomEvent) => {
+      if ((e as StorageEvent).key === key || (e as CustomEvent).detail?.key === key) {
+        try {
+          const item = window.localStorage.getItem(key);
+          setStoredValue(item ? JSON.parse(item) : initialValue);
+        } catch (error) {
+          console.warn(`Error reading localStorage key "${key}":`, error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('local-storage-change', handleStorageChange as EventListener);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('local-storage-change', handleStorageChange as EventListener);
+    };
+  }, [key, initialValue]);
+
   // Return a wrapped version of useState's setter function that
   // persists the new value to localStorage.
   const setValue = (value: T | ((val: T) => T)) => {
@@ -34,6 +58,11 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
       // Save to local storage
       if (typeof window !== 'undefined') {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
+
+        // Dispatch custom event for same-tab synchronization
+        window.dispatchEvent(new CustomEvent('local-storage-change', {
+          detail: { key }
+        }));
       }
     } catch (error) {
       console.warn(`Error setting localStorage key "${key}":`, error);

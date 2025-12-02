@@ -12,9 +12,9 @@ import styles from './page.module.css';
 import 'highlight.js/styles/github-dark.css';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // Generate static params for all blog posts
@@ -27,7 +27,8 @@ export async function generateStaticParams() {
 
 // Generate metadata for each post
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   return {
     title: `${post.title} — JobRadar Blog`,
@@ -53,8 +54,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getPostBySlug(params.slug);
-  const relatedPosts = await getRelatedPosts(params.slug, 3);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  const relatedPosts = await getRelatedPosts(slug, 3);
 
   // Generate structured data
   const articleSchema = generateArticleSchema({
@@ -63,13 +65,13 @@ export default async function BlogPostPage({ params }: PageProps) {
     datePublished: post.date,
     author: post.author,
     image: post.image,
-    url: `${siteConfig.url}/blog/${params.slug}`,
+    url: `${siteConfig.url}/blog/${slug}`,
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: siteConfig.url },
     { name: 'Blog', url: `${siteConfig.url}/blog` },
-    { name: post.title, url: `${siteConfig.url}/blog/${params.slug}` },
+    { name: post.title, url: `${siteConfig.url}/blog/${slug}` },
   ]);
 
   return (
@@ -181,7 +183,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <h3>Share this article</h3>
             <div className={styles.shareButtons}>
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`${siteConfig.url}/blog/${params.slug}`)}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`${siteConfig.url}/blog/${slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.shareButton}
@@ -189,7 +191,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 Share on Twitter
               </a>
               <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${siteConfig.url}/blog/${params.slug}`)}`}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${siteConfig.url}/blog/${slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.shareButton}

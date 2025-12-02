@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Radar, HelpCircle, Sun, Moon, Menu, X } from 'lucide-react';
+import ApiConfigMenu from './ApiConfigMenu';
 import styles from './Header.module.css';
 
 interface HeaderProps {
-  apiConfigured: boolean;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
   onOpenHelp: () => void;
 }
 
-export default function Header({ apiConfigured, theme, onToggleTheme, onOpenHelp }: HeaderProps) {
+export default function Header({ theme, onToggleTheme, onOpenHelp }: HeaderProps) {
   // Prevent hydration mismatch by only showing dynamic content after mount
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,10 +43,7 @@ export default function Header({ apiConfigured, theme, onToggleTheme, onOpenHelp
 
 
         <div className={styles.headerActions}>
-          <div className={`${styles.apiIndicator} ${mounted && apiConfigured ? styles.ready : ''}`}>
-            <span className={styles.dot} />
-            <span>{mounted ? (apiConfigured ? 'API Ready' : 'API Not Configured') : 'API Not Configured'}</span>
-          </div>
+          {mounted && <ApiConfigMenu />}
 
           <button
             className={styles.themeToggle}

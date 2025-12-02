@@ -9,7 +9,6 @@ import { useToast } from '@/hooks/useToast';
 
 // Components
 import Toast from '@/components/Toast';
-import ApiConfig from '@/components/Sidebar/ApiConfig';
 import SearchFilters from '@/components/Sidebar/SearchFilters';
 import SearchStrategies from '@/components/Sidebar/SearchStrategies';
 import LocationFilter from '@/components/Sidebar/LocationFilter';
@@ -54,12 +53,7 @@ export default function HomePage() {
     setGoogleUrl(getGoogleSearchUrl(newQuery, dateRestrict));
   }, [keywords, exclusions, strategy, dateRestrict, location]);
 
-  // Handle API credentials save
-  const handleSaveCredentials = (newApiKey: string, newCxId: string) => {
-    setApiKey(newApiKey);
-    setCxId(newCxId);
-    showToast('Credentials saved!');
-  };
+
 
   // Handle strategy selection (triggers search)
   const handleStrategySelect = async (newStrategy: StrategyType) => {
@@ -123,12 +117,6 @@ export default function HomePage() {
       <main className={styles.main}>
         {/* Sidebar */}
         <aside className={styles.sidebar}>
-          <ApiConfig
-            apiKey={apiKey}
-            cxId={cxId}
-            onSave={handleSaveCredentials}
-          />
-
           <SearchFilters
             keywords={keywords}
             exclusions={exclusions}
