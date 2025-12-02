@@ -1,0 +1,98 @@
+// Core type definitions for JobRadar
+
+export type Theme = 'light' | 'dark';
+
+export type DateRestrict = '' | 'd1' | 'w1' | 'm1';
+
+export type StrategyType = 'ats' | 'careers' | 'community' | 'docs';
+
+export interface SearchStrategy {
+  name: string;
+  description: string;
+  icon: string;
+  color: 'blue' | 'green' | 'orange' | 'purple';
+  buildQuery: (keywords: string, exclusions: string) => string;
+}
+
+export interface SearchState {
+  apiKey: string;
+  cxId: string;
+  keywords: string;
+  exclusions: string;
+  dateRestrict: DateRestrict;
+  strategy: StrategyType;
+  currentPage: number;
+  totalResults: number;
+  startIndex: number;
+}
+
+export interface GoogleSearchItem {
+  kind: string;
+  title: string;
+  htmlTitle: string;
+  link: string;
+  displayLink: string;
+  snippet: string;
+  htmlSnippet: string;
+  formattedUrl: string;
+  htmlFormattedUrl: string;
+  pagemap?: Record<string, any>;
+}
+
+export interface GoogleSearchResponse {
+  kind: string;
+  url: {
+    type: string;
+    template: string;
+  };
+  queries: {
+    request: Array<{
+      title: string;
+      totalResults: string;
+      searchTerms: string;
+      count: number;
+      startIndex: number;
+      inputEncoding: string;
+      outputEncoding: string;
+      safe: string;
+      cx: string;
+    }>;
+    nextPage?: Array<{
+      title: string;
+      totalResults: string;
+      searchTerms: string;
+      count: number;
+      startIndex: number;
+      inputEncoding: string;
+      outputEncoding: string;
+      safe: string;
+      cx: string;
+    }>;
+  };
+  searchInformation: {
+    searchTime: number;
+    formattedSearchTime: string;
+    totalResults: string;
+    formattedTotalResults: string;
+  };
+  items?: GoogleSearchItem[];
+}
+
+export interface SearchRequest {
+  apiKey: string;
+  cxId: string;
+  query: string;
+  startIndex: number;
+  dateRestrict?: DateRestrict;
+}
+
+export interface SearchError {
+  error: string;
+  message: string;
+  details?: string;
+}
+
+export interface ToastMessage {
+  message: string;
+  type?: 'success' | 'error' | 'info';
+}

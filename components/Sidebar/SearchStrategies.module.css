@@ -1,0 +1,113 @@
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cardTitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardBody {
+  padding: 1.5rem;
+}
+
+.strategyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.strategyBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.strategyBtn:hover {
+  border-color: var(--border-hover);
+  transform: translateX(4px);
+}
+
+.strategyBtn:hover .strategyArrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.strategyBtn.active {
+  border-color: var(--accent-primary);
+  background: var(--accent-glow);
+}
+
+.strategyIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.strategyIcon.blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.strategyIcon.green {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.strategyIcon.orange {
+  background: rgba(251, 146, 60, 0.15);
+  color: #fb923c;
+}
+
+.strategyIcon.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.strategyContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.strategyName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: 0.125rem;
+}
+
+.strategyDesc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.strategyArrow {
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all 0.2s ease;
+}
