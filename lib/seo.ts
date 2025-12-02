@@ -151,3 +151,29 @@ export function generateArticleSchema(article: {
     }
   };
 }
+
+// Helper function to generate page metadata
+export function generatePageMetadata(pageKey: keyof typeof pages) {
+  const page = pages[pageKey];
+  return {
+    title: page.title,
+    description: page.description,
+    keywords: siteConfig.keywords,
+    authors: [{ name: siteConfig.author.name, url: siteConfig.author.url }],
+    creator: siteConfig.creator,
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url: `${siteConfig.url}${page.path}`,
+      siteName: siteConfig.name,
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: page.title,
+      description: page.description,
+      creator: siteConfig.creator,
+    },
+  };
+}

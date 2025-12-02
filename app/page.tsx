@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { StrategyType, DateRestrict } from '@/lib/types';
-import { getStrategyQuery, getGoogleSearchUrl } from '@/lib/strategies';
+import { getStrategyQuery, getGoogleSearchUrl } from '@/lib/enhanced-strategies';
 import { useLocalStorage, useTheme } from '@/hooks/useLocalStorage';
 import { useSearch } from '@/hooks/useSearch';
 import { useToast } from '@/hooks/useToast';
@@ -15,6 +15,7 @@ import HelpModal from '@/components/HelpModal';
 import ApiConfig from '@/components/Sidebar/ApiConfig';
 import SearchFilters from '@/components/Sidebar/SearchFilters';
 import SearchStrategies from '@/components/Sidebar/SearchStrategies';
+import LocationFilter from '@/components/Sidebar/LocationFilter';
 import QueryPreview from '@/components/Sidebar/QueryPreview';
 import ResultsHeader from '@/components/Results/ResultsHeader';
 import JobCard from '@/components/Results/JobCard';
@@ -37,6 +38,7 @@ export default function HomePage() {
   const [exclusions, setExclusions] = useState('');
   const [dateRestrict, setDateRestrict] = useState<DateRestrict>('');
   const [strategy, setStrategy] = useState<StrategyType>('ats');
+  const [location, setLocation] = useState('');
 
   // UI state
   const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -51,10 +53,10 @@ export default function HomePage() {
 
   // Update query preview when inputs change
   useEffect(() => {
-    const newQuery = getStrategyQuery(strategy, keywords, exclusions);
+    const newQuery = getStrategyQuery(strategy, keywords, exclusions, location);
     setQuery(newQuery);
     setGoogleUrl(getGoogleSearchUrl(newQuery, dateRestrict));
-  }, [keywords, exclusions, strategy, dateRestrict]);
+  }, [keywords, exclusions, strategy, dateRestrict, location]);
 
   // Handle API credentials save
   const handleSaveCredentials = (newApiKey: string, newCxId: string) => {
@@ -145,6 +147,11 @@ export default function HomePage() {
             onExclusionsChange={setExclusions}
             onDateChange={setDateRestrict}
             onSearch={handleSearch}
+          />
+
+          <LocationFilter
+            selectedLocation={location}
+            onLocationChange={setLocation}
           />
 
           <SearchStrategies

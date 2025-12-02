@@ -1,0 +1,12 @@
+# robots.txt for JobRadar
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://jobradar.app/sitemap.xml
+
+# Crawl-delay (optional)
+# This helps prevent overwhelming the server
+Crawl-delay: 1
