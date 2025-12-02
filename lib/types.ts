@@ -4,14 +4,20 @@ export type Theme = 'light' | 'dark';
 
 export type DateRestrict = '' | 'd1' | 'w1' | 'm1';
 
-export type StrategyType = 'ats' | 'careers' | 'community' | 'docs';
+export type StrategyType = 'ats' | 'careers' | 'community' | 'docs' | 'jobBoards' | 'techCompanies';
 
 export interface SearchStrategy {
   name: string;
   description: string;
   icon: string;
-  color: 'blue' | 'green' | 'orange' | 'purple';
-  buildQuery: (keywords: string, exclusions: string) => string;
+  color: 'blue' | 'green' | 'orange' | 'purple' | 'pink' | 'yellow';
+  buildQuery: (keywords: string, exclusions: string, location?: string) => string;
+}
+
+export interface Location {
+  name: string;
+  value: string;
+  isRemote: boolean;
 }
 
 export interface SearchState {
@@ -21,9 +27,42 @@ export interface SearchState {
   exclusions: string;
   dateRestrict: DateRestrict;
   strategy: StrategyType;
+  location: string;
   currentPage: number;
   totalResults: number;
   startIndex: number;
+}
+
+export interface SavedSearch {
+  id: string;
+  keywords: string;
+  exclusions: string;
+  location: string;
+  strategy: StrategyType;
+  dateRestrict: DateRestrict;
+  timestamp: number;
+}
+
+export interface FavoriteJob {
+  id: string;
+  title: string;
+  link: string;
+  company: string;
+  source: string;
+  snippet: string;
+  timestamp: number;
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  readTime: string;
+  tags: string[];
+  image?: string;
+  content: string;
 }
 
 export interface GoogleSearchItem {
