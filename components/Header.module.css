@@ -101,7 +101,7 @@
 }
 
 .themeToggle,
-.helpBtn,
+.favoritesLink,
 .mobileMenuBtn {
   width: 36px;
   height: 36px;
@@ -114,10 +114,43 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
+}
+
+.favoritesCount {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .themeToggle:hover,
-.helpBtn:hover,
+.favoritesLink:hover,
 .mobileMenuBtn:hover {
   background: var(--bg-tertiary);
   color: var(--text-primary);

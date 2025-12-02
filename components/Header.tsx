@@ -2,20 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Radar, HelpCircle, Sun, Moon, Menu, X } from 'lucide-react';
+import { Radar, Heart, Sun, Moon, Menu, X } from 'lucide-react';
+import { useFavorites } from '@/hooks/useFavorites';
 import ApiConfigMenu from './ApiConfigMenu';
 import styles from './Header.module.css';
 
 interface HeaderProps {
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
-  onOpenHelp: () => void;
 }
 
-export default function Header({ theme, onToggleTheme, onOpenHelp }: HeaderProps) {
+export default function Header({ theme, onToggleTheme }: HeaderProps) {
   // Prevent hydration mismatch by only showing dynamic content after mount
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const favorites = useFavorites();
 
   useEffect(() => {
     setMounted(true);
@@ -54,14 +55,17 @@ export default function Header({ theme, onToggleTheme, onOpenHelp }: HeaderProps
             {mounted ? (theme === 'light' ? <Sun size={18} /> : <Moon size={18} />) : <Sun size={18} />}
           </button>
 
-          <button
-            className={styles.helpBtn}
-            onClick={onOpenHelp}
-            title="Help"
-            aria-label="Help"
+          <Link
+            href="/favorites"
+            className={styles.favoritesLink}
+            title="Favorites"
+            aria-label="Favorites"
           >
-            <HelpCircle size={18} />
-          </button>
+            <Heart size={18} />
+            {mounted && favorites.count > 0 && (
+              <span className={styles.favoritesCount}>{favorites.count}</span>
+            )}
+          </Link>
 
           <button
             className={styles.mobileMenuBtn}
@@ -76,6 +80,9 @@ export default function Header({ theme, onToggleTheme, onOpenHelp }: HeaderProps
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <nav className={styles.mobileNav}>
+          <Link href="/favorites" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>
+            Favorites
+          </Link>
           <Link href="/blog" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>
             Blog
           </Link>

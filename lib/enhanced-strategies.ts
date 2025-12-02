@@ -130,12 +130,18 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
     color: 'blue',
     category: 'ats',
     buildQuery: (keywords: string, exclusions: string, location?: string) => {
-      const topATS = atsPlatforms.slice(0, 15);
+      const topATS = atsPlatforms.slice(0, 30);
       const sites = topATS.map(ats => `site:${ats}`).join(' OR ');
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
-      const loc = location && location !== 'remote' ? ` "${location}"` : ' remote';
+
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        // Only quote multi-word locations to be less strict
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
+
       return `(${sites}) "${keywords}"${loc}${exclude}`;
     }
   },
@@ -157,7 +163,10 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         '-site:ziprecruiter.com',
         '-site:monster.com'
       ].join(' ');
-      const loc = location && location !== 'remote' ? ` "${location}"` : ' remote';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
       return `(intitle:"careers" OR intitle:"jobs" OR inurl:careers OR inurl:jobs) "${keywords}"${loc}${exclude} ${excludeSites}`;
     }
   },
@@ -174,7 +183,10 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
-      const loc = location && location !== 'remote' ? ` "${location}"` : '';
+      let loc = '';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
       return `(${sites}) "${keywords}" remote${loc}${exclude}`;
     }
   },
@@ -203,7 +215,10 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
-      const loc = location && location !== 'remote' ? ` "${location}"` : ' remote';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
       return `(${techGiants}) "${keywords}"${loc}${exclude}`;
     }
   },
@@ -225,7 +240,10 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
-      const loc = location && location !== 'remote' ? ` "${location}"` : ' remote';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
       return `(${sites}) ("hiring" OR "job") "${keywords}"${loc}${exclude}`;
     }
   },
@@ -240,7 +258,10 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
-      const loc = location && location !== 'remote' ? ` "${location}"` : ' remote';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
       return `(filetype:pdf OR filetype:doc) (intitle:"job description" OR intitle:"job posting" OR intitle:"hiring") "${keywords}"${loc}${exclude}`;
     }
   }
@@ -264,8 +285,8 @@ export function getGoogleSearchUrl(query: string, dateRestrict?: string): string
 
   if (dateRestrict) {
     const tbs = dateRestrict === 'd1' ? 'qdr:d' :
-                dateRestrict === 'w1' ? 'qdr:w' :
-                dateRestrict === 'm1' ? 'qdr:m' : '';
+      dateRestrict === 'w1' ? 'qdr:w' :
+        dateRestrict === 'm1' ? 'qdr:m' : '';
     if (tbs) url += `&tbs=${tbs}`;
   }
 

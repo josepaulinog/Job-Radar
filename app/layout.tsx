@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import HelpModal from '@/components/HelpModal';
 import { useLocalStorage, useTheme } from '@/hooks/useLocalStorage';
 import './globals.css';
 
@@ -15,9 +13,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { theme, toggleTheme } = useTheme();
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
-
-
 
   return (
     <html lang="en" data-theme={theme} suppressHydrationWarning>
@@ -29,12 +24,10 @@ export default function RootLayout({
         <Header
           theme={theme}
           onToggleTheme={toggleTheme}
-          onOpenHelp={() => setIsHelpOpen(true)}
         />
         {children}
         <Analytics />
         <Footer />
-        <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
       </body>
     </html>
   );

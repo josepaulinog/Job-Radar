@@ -6,6 +6,7 @@ import { getStrategyQuery, getGoogleSearchUrl } from '@/lib/enhanced-strategies'
 import { useLocalStorage, useTheme } from '@/hooks/useLocalStorage';
 import { useSearch } from '@/hooks/useSearch';
 import { useToast } from '@/hooks/useToast';
+import { useFavorites } from '@/hooks/useFavorites';
 
 // Components
 import Toast from '@/components/Toast';
@@ -42,6 +43,9 @@ export default function HomePage() {
 
   // Search hook
   const search = useSearch();
+
+  // Favorites hook
+  const favorites = useFavorites();
 
   // Toast hook
   const { toast, isVisible, showToast } = useToast();
@@ -165,21 +169,26 @@ export default function HomePage() {
               <ErrorState error={search.error} />
             )}
 
-            {/* Empty State */}
+            {/* Initial Empty State */}
             {!search.isLoading && !search.error && !hasSearched && (
               <EmptyState variant="initial" />
             )}
 
             {/* No Results State */}
             {!search.isLoading && !search.error && hasSearched && search.results.length === 0 && (
-              <EmptyState variant="no-results" />
+              <EmptyState variant="no-results" googleSearchUrl={googleUrl} />
             )}
 
             {/* Results */}
             {!search.isLoading && !search.error && search.results.length > 0 && (
               <>
                 {search.results.map((job, index) => (
-                  <JobCard key={`${job.link}-${index}`} job={job} />
+                  <JobCard
+                    key={`${job.link}-${index}`}
+                    job={job}
+                    isFavorite={favorites.isFavorite(job.link)}
+                    onToggleFavorite={favorites.toggleFavorite}
+                  />
                 ))}
               </>
             )}

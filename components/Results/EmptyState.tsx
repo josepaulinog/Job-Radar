@@ -1,11 +1,12 @@
-import { Radar, SearchX } from 'lucide-react';
+import { Radar, SearchX, ExternalLink } from 'lucide-react';
 import styles from './EmptyState.module.css';
 
 interface EmptyStateProps {
   variant?: 'initial' | 'no-results';
+  googleSearchUrl?: string;
 }
 
-export default function EmptyState({ variant = 'initial' }: EmptyStateProps) {
+export default function EmptyState({ variant = 'initial', googleSearchUrl }: EmptyStateProps) {
   const isInitial = variant === 'initial';
 
   return (
@@ -36,11 +37,25 @@ export default function EmptyState({ variant = 'initial' }: EmptyStateProps) {
       </p>
 
       {!isInitial && (
-        <div className={styles.suggestions}>
-          <span>Try:</span>
-          <span className={styles.suggestion}>"Remote"</span>
-          <span className={styles.suggestion}>"Hiring"</span>
-          <span className={styles.suggestion}>"Apply"</span>
+        <div className={styles.actions}>
+          {googleSearchUrl && (
+            <a
+              href={googleSearchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.googleBtn}
+            >
+              Open in Google Search
+              <ExternalLink size={14} />
+            </a>
+          )}
+
+          <div className={styles.suggestions}>
+            <span>Try:</span>
+            <span className={styles.suggestion}>"Remote"</span>
+            <span className={styles.suggestion}>"Hiring"</span>
+            <span className={styles.suggestion}>"Apply"</span>
+          </div>
         </div>
       )}
     </div>

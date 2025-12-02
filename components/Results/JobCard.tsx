@@ -1,15 +1,17 @@
 'use client';
 
-import { Building2, Globe, ExternalLink } from 'lucide-react';
+import { Building2, Globe, ExternalLink, Heart } from 'lucide-react';
 import { GoogleSearchItem } from '@/lib/types';
 import { parseJobFromSearchResult } from '@/lib/utils';
 import styles from './JobCard.module.css';
 
 interface JobCardProps {
   job: GoogleSearchItem;
+  isFavorite?: boolean;
+  onToggleFavorite?: (job: GoogleSearchItem) => void;
 }
 
-export default function JobCard({ job }: JobCardProps) {
+export default function JobCard({ job, isFavorite = false, onToggleFavorite }: JobCardProps) {
   const jobInfo = parseJobFromSearchResult(job);
 
   return (
@@ -32,6 +34,17 @@ export default function JobCard({ job }: JobCardProps) {
             </span>
           </div>
         </div>
+
+        {onToggleFavorite && (
+          <button
+            onClick={() => onToggleFavorite(job)}
+            className={`${styles.favoriteBtn} ${isFavorite ? styles.isFavorite : ''}`}
+            title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
+          </button>
+        )}
       </div>
 
       <p className={styles.jobSnippet}>{jobInfo.snippet}</p>

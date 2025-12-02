@@ -42,6 +42,36 @@
   margin-bottom: 1rem;
 }
 
+.favoriteBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.favoriteBtn:hover {
+  background: var(--bg-tertiary);
+  color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
+.favoriteBtn.isFavorite {
+  color: var(--accent-primary);
+}
+
+.favoriteBtn.isFavorite:hover {
+  color: #ff4757;
+  transform: scale(1.15);
+}
+
+
 .jobMain {
   flex: 1;
   min-width: 0;
