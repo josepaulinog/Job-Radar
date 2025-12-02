@@ -66,6 +66,7 @@ export default function HomePage() {
       keywords,
       exclusions,
       strategy: newStrategy,
+      location,
       dateRestrict,
       page: 1
     });
@@ -79,6 +80,7 @@ export default function HomePage() {
       keywords,
       exclusions,
       strategy,
+      location,
       dateRestrict,
       page: 1
     });
@@ -94,6 +96,7 @@ export default function HomePage() {
       keywords,
       exclusions,
       strategy,
+      location,
       dateRestrict,
       page: newPage
     });

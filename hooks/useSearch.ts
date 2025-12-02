@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { GoogleSearchItem, SearchError, StrategyType, DateRestrict } from '@/lib/types';
-import { getStrategyQuery } from '@/lib/strategies';
+import { getStrategyQuery } from '@/lib/enhanced-strategies';
 
 export interface UseSearchState {
   results: GoogleSearchItem[];
@@ -18,6 +18,7 @@ export interface UseSearchReturn extends UseSearchState {
     keywords: string;
     exclusions: string;
     strategy: StrategyType;
+    location?: string;
     dateRestrict?: DateRestrict;
     page?: number;
   }) => Promise<void>;
@@ -44,10 +45,11 @@ export function useSearch(): UseSearchReturn {
     keywords: string;
     exclusions: string;
     strategy: StrategyType;
+    location?: string;
     dateRestrict?: DateRestrict;
     page?: number;
   }) => {
-    const { apiKey, cxId, keywords, exclusions, strategy, dateRestrict, page = 1 } = params;
+    const { apiKey, cxId, keywords, exclusions, strategy, location, dateRestrict, page = 1 } = params;
 
     // Validate credentials
     if (!apiKey || !cxId) {
@@ -63,7 +65,7 @@ export function useSearch(): UseSearchReturn {
     }
 
     // Build query
-    const query = getStrategyQuery(strategy, keywords, exclusions);
+    const query = getStrategyQuery(strategy, keywords, exclusions, location);
     const startIndex = (page - 1) * 10 + 1;
 
     // Set loading state
