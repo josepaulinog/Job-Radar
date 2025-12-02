@@ -16,15 +16,20 @@ export function useFavorites() {
     useEffect(() => {
         setMounted(true);
         if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem(FAVORITES_KEY);
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    setFavorites(parsed);
-                } catch (error) {
-                    console.error('Failed to parse favorites:', error);
-                    setFavorites([]);
+            try {
+                const stored = localStorage.getItem(FAVORITES_KEY);
+                if (stored) {
+                    try {
+                        const parsed = JSON.parse(stored);
+                        setFavorites(parsed);
+                    } catch (error) {
+                        console.error('Failed to parse favorites:', error);
+                        setFavorites([]);
+                    }
                 }
+            } catch (error) {
+                console.error('Failed to access localStorage:', error);
+                setFavorites([]);
             }
         }
     }, []);
@@ -45,14 +50,18 @@ export function useFavorites() {
         };
 
         const handleCustomUpdate = () => {
-            const stored = localStorage.getItem(FAVORITES_KEY);
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    setFavorites(parsed);
-                } catch (error) {
-                    console.error('Failed to parse favorites from custom event:', error);
+            try {
+                const stored = localStorage.getItem(FAVORITES_KEY);
+                if (stored) {
+                    try {
+                        const parsed = JSON.parse(stored);
+                        setFavorites(parsed);
+                    } catch (error) {
+                        console.error('Failed to parse favorites from custom event:', error);
+                    }
                 }
+            } catch (error) {
+                console.error('Failed to access localStorage in custom event:', error);
             }
         };
 
@@ -70,11 +79,15 @@ export function useFavorites() {
     // Save favorites to localStorage and dispatch event
     const saveFavorites = useCallback((newFavorites: FavoriteJob[]) => {
         if (typeof window !== 'undefined') {
-            localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
-            // Dispatch custom event on next tick to avoid setState during render
-            setTimeout(() => {
-                window.dispatchEvent(new Event(FAVORITES_EVENT));
-            }, 0);
+            try {
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
+                // Dispatch custom event on next tick to avoid setState during render
+                setTimeout(() => {
+                    window.dispatchEvent(new Event(FAVORITES_EVENT));
+                }, 0);
+            } catch (error) {
+                console.error('Failed to save favorites to localStorage:', error);
+            }
         }
     }, []);
 

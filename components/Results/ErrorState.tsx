@@ -15,10 +15,7 @@ export default function ErrorState({ error }: ErrorStateProps) {
       <div className={styles.errorTitle}>{error.error}</div>
       <div className={styles.errorMessage}>{error.message}</div>
       {error.details && (
-        <div
-          className={styles.errorHelp}
-          dangerouslySetInnerHTML={{ __html: error.details }}
-        />
+        <div className={styles.errorHelp}>{error.details}</div>
       )}
     </div>
   );
