@@ -83,7 +83,7 @@
   background: var(--bg-tertiary);
 }
 
-.featuredImage img {
+.image {
   width: 100%;
   height: auto;
   display: block;

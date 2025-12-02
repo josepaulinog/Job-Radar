@@ -25,12 +25,12 @@ export default function SetupPage() {
                         <div className={styles.stepContent}>
                             <ol>
                                 <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a></li>
-                                <li>Click <strong>"Select a project"</strong> → <strong>"New Project"</strong></li>
-                                <li>Enter a project name (e.g., "JobRadar")</li>
-                                <li>Click <strong>"Create"</strong></li>
+                                <li>Click <strong>&quot;Select a project&quot;</strong> → <strong>&quot;New Project&quot;</strong></li>
+                                <li>Enter a project name (e.g., &quot;JobRadar&quot;)</li>
+                                <li>Click <strong>&quot;Create&quot;</strong></li>
                             </ol>
                             <div className={styles.note}>
-                                <strong>Note:</strong> You'll need a Google account. The free tier includes 100 searches per day.
+                                <strong>Note:</strong> You&apos;ll need a Google account. The free tier includes 100 searches per day.
                             </div>
                         </div>
                     </section>
@@ -44,10 +44,10 @@ export default function SetupPage() {
                         <div className={styles.stepContent}>
                             <ol>
                                 <li>In your project, go to <a href="https://console.cloud.google.com/apis/library" target="_blank" rel="noopener noreferrer">API Library</a></li>
-                                <li>Search for <strong>"Custom Search API"</strong></li>
-                                <li>Click on it and press <strong>"Enable"</strong></li>
+                                <li>Search for <strong>&quot;Custom Search API&quot;</strong></li>
+                                <li>Click on it and press <strong>&quot;Enable&quot;</strong></li>
                                 <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">Credentials</a></li>
-                                <li>Click <strong>"Create Credentials"</strong> → <strong>"API key"</strong></li>
+                                <li>Click <strong>&quot;Create Credentials&quot;</strong> → <strong>&quot;API key&quot;</strong></li>
                                 <li>Copy your API key (keep it safe!)</li>
                             </ol>
                             <div className={styles.warning}>
@@ -65,10 +65,10 @@ export default function SetupPage() {
                         <div className={styles.stepContent}>
                             <ol>
                                 <li>Go to <a href="https://programmablesearchengine.google.com/" target="_blank" rel="noopener noreferrer">Programmable Search Engine</a></li>
-                                <li>Click <strong>"Add"</strong> to create a new search engine</li>
-                                <li>Under "Sites to search", enter: <code>*</code> (asterisk for all sites)</li>
-                                <li>Give it a name (e.g., "Job Search")</li>
-                                <li>Click <strong>"Create"</strong></li>
+                                <li>Click <strong>&quot;Add&quot;</strong> to create a new search engine</li>
+                                <li>Under &quot;Sites to search&quot;, enter: <code>*</code> (asterisk for all sites)</li>
+                                <li>Give it a name (e.g., &quot;Job Search&quot;)</li>
+                                <li>Click <strong>&quot;Create&quot;</strong></li>
                                 <li>In the overview page, copy your <strong>Search engine ID</strong> (CX ID)</li>
                             </ol>
                             <div className={styles.tip}>
@@ -83,7 +83,7 @@ export default function SetupPage() {
                     <h2>Configure JobRadar</h2>
                     <p>
                         Once you have both credentials, enter them in the <strong>API Configuration</strong> section
-                        on the <a href="/">main page</a>. They'll be saved in your browser's local storage.
+                        on the <a href="/">main page</a>. They&apos;ll be saved in your browser&apos;s local storage.
                     </p>
                     <div className={styles.credentialList}>
                         <div className={styles.credential}>
@@ -100,8 +100,8 @@ export default function SetupPage() {
                     <h2>Troubleshooting</h2>
                     <div className={styles.faq}>
                         <div className={styles.faqItem}>
-                            <h3>Error: "API key not valid"</h3>
-                            <p>Make sure you've enabled the Custom Search API in your Google Cloud project and that you're using the correct API key.</p>
+                            <h3>Error: &quot;API key not valid&quot;</h3>
+                            <p>Make sure you&apos;ve enabled the Custom Search API in your Google Cloud project and that you&apos;re using the correct API key.</p>
                         </div>
                         <div className={styles.faqItem}>
                             <h3>No results appearing</h3>

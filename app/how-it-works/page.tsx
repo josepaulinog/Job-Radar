@@ -11,7 +11,7 @@ export default function HowItWorksPage() {
                 <header className={styles.header}>
                     <h1>How It Works</h1>
                     <p className={styles.subtitle}>
-                        Discover the technology behind JobRadar's powerful job search engine
+                        Discover the technology behind JobRadar&apos;s powerful job search engine
                     </p>
                 </header>
 
@@ -134,7 +134,7 @@ export default function HowItWorksPage() {
                     <div className={styles.techStack}>
                         <div className={styles.techItem}>
                             <h3>Google Custom Search API</h3>
-                            <p>Harness the power of Google's search infrastructure with precision and control.</p>
+                            <p>Harness the power of Google&apos;s search infrastructure with precision and control.</p>
                         </div>
                         <div className={styles.techItem}>
                             <h3>Advanced Search Operators</h3>
@@ -142,7 +142,7 @@ export default function HowItWorksPage() {
                         </div>
                         <div className={styles.techItem}>
                             <h3>Real-Time Results</h3>
-                            <p>Get up-to-date job listings as soon as they're posted online.</p>
+                            <p>Get up-to-date job listings as soon as they&apos;re posted online.</p>
                         </div>
                         <div className={styles.techItem}>
                             <h3>Privacy First</h3>
@@ -160,7 +160,7 @@ export default function HowItWorksPage() {
                             <ul className={styles.comparisonList}>
                                 <li className={styles.negative}>Jobs posted days/weeks later</li>
                                 <li className={styles.negative}>High competition (1000+ applicants)</li>
-                                <li className={styles.negative}>Limited to board's partnerships</li>
+                                <li className={styles.negative}>Limited to board&apos;s partnerships</li>
                                 <li className={styles.negative}>Generic search filters</li>
                             </ul>
                         </div>
@@ -195,7 +195,7 @@ export default function HowItWorksPage() {
                         </div>
                         <div className={styles.faqItem}>
                             <h3>Can I search for remote-only jobs?</h3>
-                            <p>Absolutely! Use the location filter and include keywords like "remote", "work from home",
+                            <p>Absolutely! Use the location filter and include keywords like &quot;remote&quot;, &quot;work from home&quot;,
                                 or use the Job Boards strategy which focuses on remote positions.</p>
                         </div>
                     </div>

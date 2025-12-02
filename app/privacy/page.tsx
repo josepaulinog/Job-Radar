@@ -24,7 +24,7 @@ export default function PrivacyPage() {
                     <h2>Information We Collect</h2>
                     <h3>Information You Provide</h3>
                     <ul>
-                        <li><strong>API Credentials:</strong> Your Google Custom Search API key and CX ID are stored locally in your browser's localStorage only.</li>
+                        <li><strong>API Credentials:</strong> Your Google Custom Search API key and CX ID are stored locally in your browser&apos;s localStorage only.</li>
                         <li><strong>Search Queries:</strong> Your job search keywords and preferences are processed locally.</li>
                     </ul>
                     <h3>Automatically Collected Information</h3>
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
                     <h3>Local Storage</h3>
                     <p>
                         <strong>Your API credentials are never sent to our servers.</strong> They are
-                        stored exclusively in your browser's localStorage. This means:
+                        stored exclusively in your browser&apos;s localStorage. This means:
                     </p>
                     <ul>
                         <li>Only you have access to your credentials</li>
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
                     <h2>Third-Party Services</h2>
                     <p>JobRadar integrates with the following third-party services:</p>
                     <ul>
-                        <li><strong>Google Custom Search API:</strong> Used to execute your job searches. Subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</li>
+                        <li><strong>Google Custom Search API:</strong> Used to execute your job searches. Subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google&apos;s Privacy Policy</a>.</li>
                         <li><strong>Analytics (if applicable):</strong> We may use analytics services to understand usage patterns.</li>
                     </ul>
                 </section>
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section className={styles.section}>
-                    <h2>Children's Privacy</h2>
+                    <h2>Children&apos;s Privacy</h2>
                     <p>
                         JobRadar is not intended for users under the age of 13. We do not knowingly
                         collect personal information from children under 13.
@@ -104,7 +104,7 @@ export default function PrivacyPage() {
                     <p>
                         We may update this Privacy Policy from time to time. We will notify you of
                         any changes by posting the new Privacy Policy on this page and updating the
-                        "Last Updated" date.
+                        &quot;Last Updated&quot; date.
                     </p>
                 </section>
 

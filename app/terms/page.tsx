@@ -41,7 +41,7 @@ export default function TermsPage() {
                         <li>Obtaining and maintaining valid Google Custom Search API credentials</li>
                         <li>Keeping your API credentials secure</li>
                         <li>Any charges incurred through your Google Cloud account</li>
-                        <li>Complying with Google's API Terms of Service</li>
+                        <li>Complying with Google&apos;s API Terms of Service</li>
                     </ul>
                     <h3>Acceptable Use</h3>
                     <p>You agree to:</p>
@@ -57,11 +57,11 @@ export default function TermsPage() {
                     <h2>Google API Usage</h2>
                     <p>
                         JobRadar uses the Google Custom Search API. Your use of this service is also
-                        subject to <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google's API Terms of Service</a>.
+                        subject to <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google&apos;s API Terms of Service</a>.
                         You are responsible for:
                     </p>
                     <ul>
-                        <li>Complying with Google's usage quotas and limits</li>
+                        <li>Complying with Google&apos;s usage quotas and limits</li>
                         <li>Any costs associated with API usage beyond the free tier</li>
                         <li>Ensuring your API credentials remain valid</li>
                     </ul>
@@ -70,7 +70,7 @@ export default function TermsPage() {
                 <section className={styles.section}>
                     <h2>Disclaimer of Warranties</h2>
                     <p>
-                        JobRadar is provided "as is" and "as available" without any warranties of any kind,
+                        JobRadar is provided &quot;as is&quot; and &quot;as available&quot; without any warranties of any kind,
                         either express or implied, including but not limited to:
                     </p>
                     <ul>

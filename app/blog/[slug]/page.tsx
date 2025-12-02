@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, Calendar, Clock, User, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -123,7 +124,14 @@ export default async function BlogPostPage({ params }: PageProps) {
         {/* Featured Image */}
         {post.image && (
           <div className={styles.featuredImage}>
-            <img src={post.image} alt={post.title} />
+            <Image
+              src={post.image}
+              alt={post.title}
+              width={1200}
+              height={630}
+              priority
+              className={styles.image}
+            />
           </div>
         )}
 

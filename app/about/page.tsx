@@ -103,7 +103,7 @@ export default function AboutPage() {
             </div>
             <h3>100% Free</h3>
             <p>
-              No subscriptions, no paywalls. Use Google's free tier (100 searches/day) or
+              No subscriptions, no paywalls. Use Google&apos;s free tier (100 searches/day) or
               upgrade on your terms.
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function AboutPage() {
             <h3>🎯 Job Seeker First</h3>
             <p>
               Every decision we make prioritizes helping job seekers, not recruiters or
-              companies. You're our customer.
+              companies. You&apos;re our customer.
             </p>
           </div>
 

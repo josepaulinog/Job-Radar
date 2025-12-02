@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Calendar, Clock, Tag } from 'lucide-react';
 import { BlogPost } from '@/lib/types';
 import { formatDate } from '@/lib/blog';
@@ -13,7 +14,13 @@ export default function BlogCard({ post }: BlogCardProps) {
     <article className={styles.blogCard}>
       {post.image && (
         <div className={styles.imageContainer}>
-          <img src={post.image} alt={post.title} className={styles.image} />
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className={styles.image}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
         </div>
       )}
 
