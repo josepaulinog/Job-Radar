@@ -1,6 +1,13 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { GoogleSearchItem, SearchError, StrategyType, DateRestrict } from '@/lib/types';
 import { getStrategyQuery } from '@/lib/enhanced-strategies';
+import {
+  validateApiKey,
+  validateCxId,
+  sanitizeKeywords,
+  sanitizeExclusions,
+  sanitizeLocation
+} from '@/lib/validation';
 
 export interface UseSearchState {
   results: GoogleSearchItem[];
@@ -39,6 +46,10 @@ export function useSearch(): UseSearchReturn {
     error: null
   });
 
+  // Request deduplication
+  const currentRequestIdRef = useRef<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const executeSearch = useCallback(async (params: {
     apiKey: string;
     cxId: string;
@@ -50,6 +61,19 @@ export function useSearch(): UseSearchReturn {
     page?: number;
   }) => {
     const { apiKey, cxId, keywords, exclusions, strategy, location, dateRestrict, page = 1 } = params;
+
+    // Abort previous request if still pending
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new abort controller for this request
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
+
+    // Generate unique request ID for deduplication
+    const requestId = `${Date.now()}-${Math.random()}`;
+    currentRequestIdRef.current = requestId;
 
     // Validate credentials
     if (!apiKey || !cxId) {
@@ -64,8 +88,53 @@ export function useSearch(): UseSearchReturn {
       return;
     }
 
-    // Build query
-    const query = getStrategyQuery(strategy, keywords, exclusions, location);
+    // Validate API key format
+    if (!validateApiKey(apiKey)) {
+      setState(prev => ({
+        ...prev,
+        error: {
+          error: 'Invalid API Key',
+          message: 'The API key format appears to be invalid. Google API keys typically start with "AIza".',
+          details: 'Please check your API key in the Google Cloud Console.'
+        },
+        isLoading: false
+      }));
+      return;
+    }
+
+    // Validate CX ID format
+    if (!validateCxId(cxId)) {
+      setState(prev => ({
+        ...prev,
+        error: {
+          error: 'Invalid Search Engine ID',
+          message: 'The Search Engine ID (CX) format appears to be invalid.',
+          details: 'Please check your CX in the Programmable Search Engine console.'
+        },
+        isLoading: false
+      }));
+      return;
+    }
+
+    // Sanitize inputs
+    const sanitizedKeywords = sanitizeKeywords(keywords);
+    const sanitizedExclusions = sanitizeExclusions(exclusions);
+    const sanitizedLocation = location ? sanitizeLocation(location) : undefined;
+
+    if (!sanitizedKeywords) {
+      setState(prev => ({
+        ...prev,
+        error: {
+          error: 'Invalid Keywords',
+          message: 'Please enter valid search keywords.'
+        },
+        isLoading: false
+      }));
+      return;
+    }
+
+    // Build query with sanitized inputs
+    const query = getStrategyQuery(strategy, sanitizedKeywords, sanitizedExclusions, sanitizedLocation);
     const startIndex = (page - 1) * 10 + 1;
 
     // Set loading state
@@ -89,15 +158,27 @@ export function useSearch(): UseSearchReturn {
           query,
           startIndex,
           dateRestrict
-        })
+        }),
+        signal: abortController.signal
       });
 
+      // Check if this request is still current
+      if (currentRequestIdRef.current !== requestId) {
+        // Request was superseded, ignore results
+        return;
+      }
+
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `API Error: ${response.status}`);
       }
 
       const data = await response.json();
+
+      // Double-check request is still current before updating state
+      if (currentRequestIdRef.current !== requestId) {
+        return;
+      }
 
       setState(prev => ({
         ...prev,
@@ -108,6 +189,17 @@ export function useSearch(): UseSearchReturn {
       }));
 
     } catch (error) {
+      // Check if this is an abort error
+      if (error instanceof Error && error.name === 'AbortError') {
+        // Request was aborted, don't show error
+        return;
+      }
+
+      // Check if request is still current
+      if (currentRequestIdRef.current !== requestId) {
+        return;
+      }
+
       console.error('Search error:', error);
 
       let errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -120,6 +212,8 @@ export function useSearch(): UseSearchReturn {
         errorDetails = 'Your Search Engine ID (CX) appears to be invalid. Create one at Programmable Search Engine.';
       } else if (errorMessage.includes('quota') || errorMessage.includes('limit')) {
         errorDetails = "You've exceeded your daily quota of 100 free searches. You can wait until tomorrow or upgrade your quota.";
+      } else if (errorMessage.includes('fetch')) {
+        errorDetails = 'Network error. Please check your internet connection and try again.';
       }
 
       setState(prev => ({

@@ -1,0 +1,16 @@
+.sidebar {
+  flex: 0 0 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    flex: 1;
+    position: static;
+  }
+}
