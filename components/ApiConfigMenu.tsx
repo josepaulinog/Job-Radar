@@ -3,12 +3,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { Key, Search, Save, Settings } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useToast } from '@/hooks/useToast';
+import Toast from '@/components/Toast';
 import styles from './ApiConfigMenu.module.css';
 
 export default function ApiConfigMenu() {
     const [isOpen, setIsOpen] = useState(false);
     const [apiKey, setApiKey] = useLocalStorage('jobhunter_api_key', '');
     const [cxId, setCxId] = useLocalStorage('jobhunter_cx_id', '');
+    const { toast, isVisible, showToast } = useToast();
 
     const [localApiKey, setLocalApiKey] = useState(apiKey);
     const [localCxId, setLocalCxId] = useState(cxId);
@@ -25,6 +28,7 @@ export default function ApiConfigMenu() {
         setApiKey(localApiKey.trim());
         setCxId(localCxId.trim());
         setIsOpen(false);
+        showToast('API credentials saved successfully');
     };
 
     const isConfigured = !!(apiKey && cxId);
@@ -104,6 +108,8 @@ export default function ApiConfigMenu() {
                     </div>
                 </>
             )}
+            {/* Toast Notification */}
+            {toast && <Toast message={toast.message} isVisible={isVisible} />}
         </div>
     );
 }

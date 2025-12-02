@@ -187,7 +187,11 @@ export default function HomePage() {
                     key={`${job.link}-${index}`}
                     job={job}
                     isFavorite={favorites.isFavorite(job.link)}
-                    onToggleFavorite={favorites.toggleFavorite}
+                    onToggleFavorite={(job) => {
+                      const isFav = favorites.isFavorite(job.link);
+                      favorites.toggleFavorite(job);
+                      showToast(isFav ? 'Removed from favorites' : 'Added to favorites');
+                    }}
                   />
                 ))}
               </>

@@ -95,6 +95,17 @@ export default function Header({ theme, onToggleTheme }: HeaderProps) {
           <Link href="/how-it-works" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>
             How It Works
           </Link>
+
+          <button
+            className={styles.mobileThemeBtn}
+            onClick={() => {
+              onToggleTheme();
+              setMobileMenuOpen(false);
+            }}
+          >
+            {mounted ? (theme === 'light' ? <Sun size={18} /> : <Moon size={18} />) : <Sun size={18} />}
+            {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          </button>
         </nav>
       )}
     </header>
