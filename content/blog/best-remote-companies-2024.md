@@ -5,7 +5,7 @@ date: "2024-01-25"
 author: "Jose Paulino"
 readTime: "15 min read"
 tags: ["Remote Work", "Company Reviews", "Remote Jobs", "Career Guide"]
-image: "/images/blog/remote-companies.jpg"
+image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&auto=format&fit=crop"
 ---
 
 # 50 Best Remote-First Companies Hiring in 2024

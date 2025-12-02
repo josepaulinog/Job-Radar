@@ -5,7 +5,7 @@ date: "2024-01-15"
 author: "Jose Paulino"
 readTime: "8 min read"
 tags: ["ATS", "Resume Tips", "Job Search", "Career Advice"]
-image: "/images/blog/ats-systems.jpg"
+image: "https://images.unsplash.com/photo-1586281380614-65da3a2a5a2d?w=1200&auto=format&fit=crop"
 ---
 
 # How to Bypass ATS Systems and Land More Interviews in 2024

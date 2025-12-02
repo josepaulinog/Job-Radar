@@ -5,7 +5,7 @@ date: "2024-01-20"
 author: "Jose Paulino"
 readTime: "10 min read"
 tags: ["Remote Work", "Job Search", "Career Tips", "Work From Home"]
-image: "/images/blog/remote-job-search.jpg"
+image: "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=1200&auto=format&fit=crop"
 ---
 
 # 10 Remote Job Search Strategies That Actually Work in 2024

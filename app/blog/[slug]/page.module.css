@@ -121,7 +121,8 @@
   color: var(--text-secondary);
 }
 
-.ul, .ol {
+.ul,
+.ol {
   margin: 1.5rem 0;
   padding-left: 2rem;
 }
@@ -295,7 +296,7 @@
 }
 
 /* Code syntax highlighting override */
-:global(.hljs) {
+.content :global(.hljs) {
   background: var(--bg-tertiary) !important;
   padding: 1.5rem !important;
   border-radius: 8px !important;

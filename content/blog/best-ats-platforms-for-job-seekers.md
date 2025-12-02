@@ -5,7 +5,7 @@ date: "2024-01-10"
 author: "Jose Paulino"
 readTime: "12 min read"
 tags: ["ATS", "Job Search", "Career Guide", "Job Platforms"]
-image: "/images/blog/ats-platforms.jpg"
+image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&auto=format&fit=crop"
 ---
 
 # Top 15 ATS Platforms Every Job Seeker Should Know (2024 Guide)

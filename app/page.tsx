@@ -8,10 +8,7 @@ import { useSearch } from '@/hooks/useSearch';
 import { useToast } from '@/hooks/useToast';
 
 // Components
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Toast from '@/components/Toast';
-import HelpModal from '@/components/HelpModal';
 import ApiConfig from '@/components/Sidebar/ApiConfig';
 import SearchFilters from '@/components/Sidebar/SearchFilters';
 import SearchStrategies from '@/components/Sidebar/SearchStrategies';
@@ -41,7 +38,6 @@ export default function HomePage() {
   const [location, setLocation] = useState('');
 
   // UI state
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [googleUrl, setGoogleUrl] = useState('');
 
@@ -123,12 +119,6 @@ export default function HomePage() {
 
   return (
     <div className={styles.container}>
-      <Header
-        apiConfigured={apiConfigured}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        onOpenHelp={() => setIsHelpOpen(true)}
-      />
 
       <main className={styles.main}>
         {/* Sidebar */}
@@ -206,10 +196,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <Footer />
-
       {/* Modals & Overlays */}
-      <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
       {toast && <Toast message={toast.message} isVisible={isVisible} />}
     </div>
   );

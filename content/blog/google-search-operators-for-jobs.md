@@ -5,7 +5,7 @@ date: "2024-01-05"
 author: "Jose Paulino"
 readTime: "7 min read"
 tags: ["Google", "Search Tips", "Job Hunting", "Advanced Techniques"]
-image: "/images/blog/google-search-operators.jpg"
+image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop"
 ---
 
 # Master Google Search Operators to Find Hidden Job Opportunities

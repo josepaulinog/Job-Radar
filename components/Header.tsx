@@ -54,7 +54,7 @@ export default function Header({ apiConfigured, theme, onToggleTheme, onOpenHelp
             title="Toggle theme"
             aria-label="Toggle theme"
           >
-            {theme === 'light' ? <Sun size={18} /> : <Moon size={18} />}
+            {mounted ? (theme === 'light' ? <Sun size={18} /> : <Moon size={18} />) : <Sun size={18} />}
           </button>
 
           <button

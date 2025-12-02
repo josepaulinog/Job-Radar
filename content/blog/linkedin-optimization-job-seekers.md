@@ -5,7 +5,7 @@ date: "2024-01-30"
 author: "Jose Paulino"
 readTime: "12 min read"
 tags: ["LinkedIn", "Personal Branding", "Job Search", "Networking"]
-image: "/images/blog/linkedin-optimization.jpg"
+image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&auto=format&fit=crop"
 ---
 
 # LinkedIn Optimization: Get Recruiters to Find You (2024 Guide)
