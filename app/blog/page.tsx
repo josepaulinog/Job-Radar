@@ -40,7 +40,7 @@ export default async function BlogPage() {
           <div className={styles.heroIcon}>
             <Newspaper size={40} />
           </div>
-          <h1 className={styles.heroTitle}>JobRadar Blog</h1>
+          <h1 className={styles.heroTitle}>Job<span style={{ color: 'var(--accent-primary)' }}>Radar</span> Blog</h1>
           <p className={styles.heroDescription}>
             Expert tips, strategies, and insights for remote job seekers. Learn how to find
             hidden opportunities, optimize your applications, and land your dream remote job.

@@ -165,7 +165,7 @@ export default function HowItWorksPage() {
                             </ul>
                         </div>
                         <div className={styles.comparisonColumn}>
-                            <h3 className={styles.comparisonTitle}>JobRadar</h3>
+                            <h3 className={styles.comparisonTitle}>Job<span style={{ color: 'var(--accent-primary)' }}>Radar</span></h3>
                             <ul className={styles.comparisonList}>
                                 <li className={styles.positive}>Find jobs at the source</li>
                                 <li className={styles.positive}>Be among the first applicants</li>

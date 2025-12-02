@@ -14,13 +14,15 @@ export default function BlogCard({ post }: BlogCardProps) {
     <article className={styles.blogCard}>
       {post.image && (
         <div className={styles.imageContainer}>
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className={styles.image}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          <Link href={`/blog/${post.slug}`} className={styles.imageLink}>
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              className={styles.image}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </Link>
         </div>
       )}
 

@@ -80,7 +80,7 @@ export default function SetupPage() {
 
                 {/* Configuration Section */}
                 <section className={styles.configure}>
-                    <h2>Configure JobRadar</h2>
+                    <h2>Configure Job<span style={{ color: 'var(--accent-primary)' }}>Radar</span></h2>
                     <p>
                         Once you have both credentials, enter them in the <strong>API Configuration</strong> section
                         on the <a href="/">main page</a>. They&apos;ll be saved in your browser&apos;s local storage.

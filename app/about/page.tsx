@@ -28,7 +28,7 @@ export default function AboutPage() {
       />
 
       <section className={styles.hero}>
-        <h1 className={styles.title}>About JobRadar</h1>
+        <h1 className={styles.title}>About Job<span style={{ color: 'var(--accent-primary)' }}>Radar</span></h1>
         <p className={styles.subtitle}>
           Helping job seekers discover hidden remote opportunities by searching where companies actually post jobs
         </p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
       </section>
 
       <section className={styles.features}>
-        <h2 className={styles.sectionTitle}>Why JobRadar?</h2>
+        <h2 className={styles.sectionTitle}>Why Job<span style={{ color: 'var(--accent-primary)' }}>Radar</span>?</h2>
         <div className={styles.featureGrid}>
           <div className={styles.feature}>
             <div className={styles.featureIcon}>
