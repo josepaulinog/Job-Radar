@@ -208,7 +208,7 @@ export default function HomePage() {
         {/* Results Area */}
         <ResultsContainer
           results={filteredResults}
-          totalResults={filteredResults.length}
+          totalResults={search.totalResults}
           currentPage={search.currentPage}
           isLoading={search.isLoading}
           error={search.error}
