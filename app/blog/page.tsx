@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Search, Newspaper } from 'lucide-react';
 import { getAllPosts, getAllTags } from '@/lib/blog';
 import { pages, siteConfig, generateBreadcrumbSchema } from '@/lib/seo';
-import BlogCard from '@/components/Blog/BlogCard';
+import BlogGrid from '@/components/Blog/BlogGrid';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -65,11 +65,7 @@ export default async function BlogPage() {
           <span className={styles.postsCount}>{posts.length} articles</span>
         </div>
 
-        <div className={styles.postsGrid}>
-          {posts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
-          ))}
-        </div>
+        <BlogGrid posts={posts} />
       </section>
 
       {/* CTA Section */}

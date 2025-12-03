@@ -5,9 +5,10 @@ import { ArrowLeft, Calendar, Clock, User, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
-import { getPostBySlug, getAllPostSlugs, getRelatedPosts, formatDate } from '@/lib/blog';
+import { getPostBySlug, getAllPostSlugs, getRelatedPosts, formatDate, extractHeadings } from '@/lib/blog';
 import { generateArticleSchema, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
 import BlogCard from '@/components/Blog/BlogCard';
+import TableOfContents from '@/components/Blog/TableOfContents';
 import styles from './page.module.css';
 import 'highlight.js/styles/github-dark.css';
 
@@ -58,6 +59,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   const post = await getPostBySlug(slug);
   const relatedPosts = await getRelatedPosts(slug, 3);
 
+  // Extract headings for table of contents
+  const headings = extractHeadings(post.content);
+
   // Generate structured data
   const articleSchema = generateArticleSchema({
     title: post.title,
@@ -86,15 +90,18 @@ export default async function BlogPostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <article className={styles.article}>
-        {/* Back Link */}
-        <Link href="/blog" className={styles.backLink}>
-          <ArrowLeft size={16} />
-          Back to Blog
-        </Link>
+      {/* Back Link */}
+      <Link href="/blog" className={styles.backLink}>
+        <ArrowLeft size={16} />
+        Back to Blog
+      </Link>
 
-        {/* Article Header */}
-        <header className={styles.header}>
+      {/* Main Content Layout */}
+      <div className={styles.contentLayout}>
+        {/* Article */}
+        <article className={styles.article}>
+          {/* Article Header */}
+          <header className={styles.header}>
           <div className={styles.tags}>
             {post.tags.map((tag) => (
               <span key={tag} className={styles.tag}>
@@ -143,9 +150,21 @@ export default async function BlogPostPage({ params }: PageProps) {
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeHighlight]}
             components={{
-              h1: ({ children }) => <h1 className={styles.h1}>{children}</h1>,
-              h2: ({ children }) => <h2 className={styles.h2}>{children}</h2>,
-              h3: ({ children }) => <h3 className={styles.h3}>{children}</h3>,
+              h1: ({ children }) => {
+                const text = String(children);
+                const id = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                return <h1 id={id} className={styles.h1}>{children}</h1>;
+              },
+              h2: ({ children }) => {
+                const text = String(children);
+                const id = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                return <h2 id={id} className={styles.h2}>{children}</h2>;
+              },
+              h3: ({ children }) => {
+                const text = String(children);
+                const id = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                return <h3 id={id} className={styles.h3}>{children}</h3>;
+              },
               p: ({ children }) => <p className={styles.paragraph}>{children}</p>,
               ul: ({ children }) => <ul className={styles.ul}>{children}</ul>,
               ol: ({ children }) => <ol className={styles.ol}>{children}</ol>,
@@ -200,8 +219,16 @@ export default async function BlogPostPage({ params }: PageProps) {
               </a>
             </div>
           </div>
-        </footer>
-      </article>
+          </footer>
+        </article>
+
+        {/* Table of Contents Sidebar */}
+        {headings.length > 0 && (
+          <aside className={styles.sidebar}>
+            <TableOfContents headings={headings} />
+          </aside>
+        )}
+      </div>
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (

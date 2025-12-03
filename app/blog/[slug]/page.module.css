@@ -1,11 +1,7 @@
 .container {
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 3rem 2rem;
-}
-
-.article {
-  margin-bottom: 4rem;
 }
 
 .backLink {
@@ -17,6 +13,22 @@
   text-decoration: none;
   margin-bottom: 2rem;
   transition: color 0.2s ease;
+}
+
+.contentLayout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 3rem;
+  align-items: start;
+}
+
+.article {
+  margin-bottom: 4rem;
+  min-width: 0;
+}
+
+.sidebar {
+  position: relative;
 }
 
 .backLink:hover {
@@ -271,6 +283,17 @@
 
 .ctaButton:hover {
   transform: translateY(-2px);
+}
+
+@media (max-width: 1200px) {
+  .contentLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    order: -1;
+    margin-bottom: 2rem;
+  }
 }
 
 @media (max-width: 768px) {

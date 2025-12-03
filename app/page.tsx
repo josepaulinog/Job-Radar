@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { StrategyType, DateRestrict, GoogleSearchItem } from '@/lib/types';
 import { getStrategyQuery, getGoogleSearchUrl } from '@/lib/enhanced-strategies';
+import { WorkLocationType } from '@/lib/work-location';
 import { useLocalStorage, useTheme } from '@/hooks/useLocalStorage';
 import { useSearch } from '@/hooks/useSearch';
 import { useToast } from '@/hooks/useToast';
@@ -16,6 +17,7 @@ import {
   trackFavoriteRemoved,
   trackError
 } from '@/lib/analytics';
+import { pageTransitionIn } from '@/lib/gsap-animations';
 
 // Components
 import Toast from '@/components/Toast';
@@ -39,6 +41,10 @@ export default function HomePage() {
   const [strategy, setStrategy] = useState<StrategyType>('ats');
   const [location, setLocation] = useState('');
 
+  // Filter state
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedWorkLocations, setSelectedWorkLocations] = useState<WorkLocationType[]>([]);
+
   // UI state
   const [query, setQuery] = useState('');
   const [googleUrl, setGoogleUrl] = useState('');
@@ -51,6 +57,11 @@ export default function HomePage() {
 
   // Toast hook
   const { toast, isVisible, showToast } = useToast();
+
+  // Page transition animation
+  useEffect(() => {
+    pageTransitionIn({ duration: 0.8 });
+  }, []);
 
   // Update query preview when inputs change
   useEffect(() => {
@@ -164,6 +175,27 @@ export default function HomePage() {
   const apiConfigured = !!(apiKey && cxId);
   const hasSearched = search.results.length > 0 || search.error !== null;
 
+  // Filter results based on selected categories and work locations
+  const filteredResults = useMemo(() => {
+    let filtered = search.results;
+
+    // Filter by categories if any are selected
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(job =>
+        job.category && selectedCategories.includes(job.category)
+      );
+    }
+
+    // Filter by work locations if any are selected
+    if (selectedWorkLocations.length > 0) {
+      filtered = filtered.filter(job =>
+        job.workLocation && selectedWorkLocations.includes(job.workLocation)
+      );
+    }
+
+    return filtered;
+  }, [search.results, selectedCategories, selectedWorkLocations]);
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -176,19 +208,23 @@ export default function HomePage() {
           location={location}
           query={query}
           googleUrl={googleUrl}
+          selectedCategories={selectedCategories}
+          selectedWorkLocations={selectedWorkLocations}
           onKeywordsChange={setKeywords}
           onExclusionsChange={setExclusions}
           onDateChange={setDateRestrict}
           onStrategySelect={handleStrategySelect}
           onLocationChange={setLocation}
+          onCategoriesChange={setSelectedCategories}
+          onWorkLocationsChange={setSelectedWorkLocations}
           onSearch={handleSearch}
           onCopyQuery={handleCopyQuery}
         />
 
         {/* Results Area */}
         <ResultsContainer
-          results={search.results}
-          totalResults={search.totalResults}
+          results={filteredResults}
+          totalResults={filteredResults.length}
           currentPage={search.currentPage}
           isLoading={search.isLoading}
           error={search.error}
