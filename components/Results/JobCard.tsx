@@ -1,8 +1,11 @@
 'use client';
 
+import React from 'react';
 import { Building2, Globe, ExternalLink, Heart } from 'lucide-react';
 import { GoogleSearchItem } from '@/lib/types';
 import { parseJobFromSearchResult } from '@/lib/utils';
+import { getCategoryById } from '@/lib/job-categories';
+import { getWorkLocationInfo } from '@/lib/work-location';
 import styles from './JobCard.module.css';
 
 interface JobCardProps {
@@ -13,6 +16,8 @@ interface JobCardProps {
 
 export default function JobCard({ job, isFavorite = false, onToggleFavorite }: JobCardProps) {
   const jobInfo = parseJobFromSearchResult(job);
+  const category = job.category ? getCategoryById(job.category) : null;
+  const workLocation = job.workLocation ? getWorkLocationInfo(job.workLocation) : null;
 
   return (
     <div className={styles.jobCard}>
@@ -32,6 +37,24 @@ export default function JobCard({ job, isFavorite = false, onToggleFavorite }: J
               <Globe size={12} />
               {jobInfo.source}
             </span>
+            {workLocation && (
+              <span
+                className={styles.workLocationBadge}
+                style={{ borderColor: workLocation.color, color: workLocation.color }}
+              >
+                {React.createElement(workLocation.icon, { size: 12 })}
+                {workLocation.label}
+              </span>
+            )}
+            {category && (
+              <span
+                className={styles.categoryBadge}
+                style={{ borderColor: category.color, color: category.color }}
+              >
+                {React.createElement(category.icon, { size: 12 })}
+                {category.name}
+              </span>
+            )}
           </div>
         </div>
 
