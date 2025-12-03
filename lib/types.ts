@@ -111,6 +111,9 @@ export interface GoogleSearchResponse {
       cx: string;
     }>;
   };
+  context?: {
+    title: string;
+  };
   searchInformation: {
     searchTime: number;
     formattedSearchTime: string;
