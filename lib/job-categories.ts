@@ -12,7 +12,6 @@ import {
   Lightbulb,
   CheckCircle,
   BarChart3,
-  Wordpress,
   Asterisk,
   LucideIcon
 } from 'lucide-react';
@@ -120,7 +119,7 @@ export const JOB_CATEGORIES: JobCategory[] = [
   {
     id: 'wordpress',
     name: 'WordPress Developer',
-    icon: Wordpress,
+    icon: Code2,
     keywords: ['wordpress', 'wp', 'wordpress developer', 'wordpress engineer', 'woocommerce'],
     color: '#21759B',
   },

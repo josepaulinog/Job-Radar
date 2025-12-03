@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Clock, Tag } from 'lucide-react';
 import { BlogPost } from '@/lib/types';
-import { formatDate } from '@/lib/blog';
+import { formatDate } from '@/lib/blog-client';
 import styles from './BlogCard.module.css';
 
 interface BlogCardProps {

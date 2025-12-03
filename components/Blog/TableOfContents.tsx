@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Heading } from '@/lib/blog';
+import { Heading } from '@/lib/blog-client';
 import { List } from 'lucide-react';
 import styles from './TableOfContents.module.css';
 

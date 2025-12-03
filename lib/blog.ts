@@ -2,6 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { BlogPost } from './types';
+import { Heading, formatDate as clientFormatDate } from './blog-client';
+
+// Re-export client-safe utilities
+export { type Heading, formatDate } from './blog-client';
 
 const postsDirectory = path.join(process.cwd(), 'content/blog');
 
@@ -118,18 +122,6 @@ export function calculateReadTime(content: string): string {
 }
 
 /**
- * Format date for display
- */
-export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
-
-/**
  * Generate excerpt from content
  */
 export function generateExcerpt(content: string, length: number = 160): string {
@@ -148,15 +140,6 @@ export function generateExcerpt(content: string, length: number = 160): string {
   }
 
   return plainText.substring(0, length).trim() + '...';
-}
-
-/**
- * Heading interface for table of contents
- */
-export interface Heading {
-  id: string;
-  text: string;
-  level: number;
 }
 
 /**

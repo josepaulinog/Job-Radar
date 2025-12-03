@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { BlogPost } from '@/lib/blog';
+import { BlogPost } from '@/lib/types';
 import BlogCard from './BlogCard';
 import { staggerChildren } from '@/lib/gsap-animations';
 import styles from './BlogGrid.module.css';
