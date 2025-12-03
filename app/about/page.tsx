@@ -1,7 +1,7 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Target, Heart, Users, Zap, Globe, Lock } from 'lucide-react';
-import { pages, siteConfig, generateBreadcrumbSchema } from '@/lib/seo';
+import { Target, Heart, Users, Zap, Globe, Lock, Rocket } from 'lucide-react';
+import { pages, siteConfig, generateBreadcrumbSchema, generatePageMetadata } from '@/lib/seo';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -148,7 +148,7 @@ export default function AboutPage() {
         <h2 className={styles.sectionTitle}>Our Values</h2>
         <div className={styles.valueList}>
           <div className={styles.value}>
-            <h3>🎯 Job Seeker First</h3>
+            <h3><Target size={20} style={{ display: 'inline', marginRight: '0.5rem' }} /> Job Seeker First</h3>
             <p>
               Every decision we make prioritizes helping job seekers, not recruiters or
               companies. You&apos;re our customer.
@@ -164,7 +164,7 @@ export default function AboutPage() {
           </div>
 
           <div className={styles.value}>
-            <h3>🚀 Transparency</h3>
+            <h3><Rocket size={20} style={{ display: 'inline', marginRight: '0.5rem' }} /> Transparency</h3>
             <p>
               Open source code, transparent about how we work, honest about limitations. No
               hidden fees or tricks.

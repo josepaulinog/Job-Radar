@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Target, Briefcase, FileText } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/seo';
 import styles from './page.module.css';
 
@@ -85,7 +86,7 @@ export default function HowItWorksPage() {
                     <h2>6 Specialized Search Strategies</h2>
                     <div className={styles.strategyGrid}>
                         <div className={styles.strategyCard}>
-                            <div className={styles.strategyIcon}>🎯</div>
+                            <div className={styles.strategyIcon}><Target size={28} /></div>
                             <h3>ATS X-Ray</h3>
                             <p>Search across 50+ Applicant Tracking Systems like Greenhouse, Lever, Workable, and more.</p>
                             <div className={styles.strategyStats}>50+ platforms</div>
@@ -106,7 +107,7 @@ export default function HowItWorksPage() {
                         </div>
 
                         <div className={styles.strategyCard}>
-                            <div className={styles.strategyIcon}>💼</div>
+                            <div className={styles.strategyIcon}><Briefcase size={28} /></div>
                             <h3>Tech Giants</h3>
                             <p>Search career pages of 25+ major tech companies: Google, Apple, Amazon, and more.</p>
                             <div className={styles.strategyStats}>25+ companies</div>
@@ -120,7 +121,7 @@ export default function HowItWorksPage() {
                         </div>
 
                         <div className={styles.strategyCard}>
-                            <div className={styles.strategyIcon}>📄</div>
+                            <div className={styles.strategyIcon}><FileText size={28} /></div>
                             <h3>Documents</h3>
                             <p>Discover job specs and hiring documents in PDFs and other file formats.</p>
                             <div className={styles.strategyStats}>All file types</div>

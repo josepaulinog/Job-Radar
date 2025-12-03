@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Heading } from '@/lib/blog-client';
 import { List } from 'lucide-react';
+import { gsap } from '@/lib/animations';
 import styles from './TableOfContents.module.css';
 
 interface TableOfContentsProps {
@@ -11,6 +12,7 @@ interface TableOfContentsProps {
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
+  const linksRef = useRef<Map<string, HTMLAnchorElement>>(new Map());
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,6 +38,20 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
     return () => observer.disconnect();
   }, [headings]);
+
+  // Animate active link change
+  useEffect(() => {
+    if (activeId) {
+      const activeLink = linksRef.current.get(activeId);
+      if (activeLink) {
+        gsap.fromTo(
+          activeLink,
+          { x: -5, opacity: 0.7 },
+          { x: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }
+        );
+      }
+    }
+  }, [activeId]);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -73,6 +89,9 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
             }}
           >
             <a
+              ref={(el) => {
+                if (el) linksRef.current.set(heading.id, el);
+              }}
               href={`#${heading.id}`}
               onClick={(e) => handleClick(e, heading.id)}
               className={`${styles.tocLink} ${activeId === heading.id ? styles.active : ''}`}

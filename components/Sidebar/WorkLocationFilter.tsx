@@ -1,3 +1,4 @@
+import { Briefcase } from 'lucide-react';
 import { WORK_LOCATIONS, WorkLocationType } from '@/lib/work-location';
 import styles from './WorkLocationFilter.module.css';
 
@@ -28,8 +29,11 @@ export default function WorkLocationFilter({
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Work Location</h3>
+      <div className={styles.cardHeader}>
+        <div className={styles.cardTitle}>
+          <Briefcase size={14} />
+          Work Location
+        </div>
         <div className={styles.actions}>
           <button
             onClick={selectAll}
@@ -48,7 +52,7 @@ export default function WorkLocationFilter({
         </div>
       </div>
 
-      <div className={styles.types}>
+      <div className={styles.cardBody}>
         {Object.values(WORK_LOCATIONS).map((location) => {
           const Icon = location.icon;
           const isSelected = selectedTypes.includes(location.type);
@@ -59,15 +63,10 @@ export default function WorkLocationFilter({
               onClick={() => toggleType(location.type)}
               className={`${styles.type} ${isSelected ? styles.selected : ''}`}
               type="button"
-              style={{
-                borderColor: isSelected ? location.color : 'transparent',
-                backgroundColor: isSelected ? `${location.color}10` : 'transparent',
-              }}
             >
-              <Icon
-                size={18}
-                color={isSelected ? location.color : 'currentColor'}
-              />
+              <div className={`${styles.locationIcon} ${styles[location.type]}`}>
+                <Icon size={20} />
+              </div>
               <span className={styles.typeName}>{location.label}</span>
             </button>
           );

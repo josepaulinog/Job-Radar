@@ -1,6 +1,6 @@
 'use client';
 
-import { Database, Briefcase, Users, FileText, Globe, Building2 } from 'lucide-react';
+import { Database, Briefcase, Users, FileText, Globe, Building2, Linkedin, Rocket, Coins } from 'lucide-react';
 import { StrategyType } from '@/lib/types';
 import { enhancedStrategies } from '@/lib/enhanced-strategies';
 import styles from './SearchStrategies.module.css';
@@ -16,7 +16,10 @@ const iconMap = {
   users: Users,
   'file-text': FileText,
   globe: Globe,
-  'building-2': Building2
+  'building-2': Building2,
+  linkedin: Linkedin,
+  rocket: Rocket,
+  coins: Coins,
 };
 
 export default function SearchStrategies({ selectedStrategy, onSelectStrategy }: SearchStrategiesProps) {

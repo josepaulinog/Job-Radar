@@ -1,5 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced selection */
+::selection {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+/* Better focus states */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
 :root {
   --bg-primary: #0a0a0b;
   --bg-secondary: #111113;
@@ -234,11 +266,9 @@ button {
 
 /* Gradient backgrounds */
 .bg-gradient-radial {
-  background: radial-gradient(
-    circle at 50% 0%,
-    rgba(0, 212, 170, 0.1),
-    transparent 70%
-  );
+  background: radial-gradient(circle at 50% 0%,
+      rgba(0, 212, 170, 0.1),
+      transparent 70%);
 }
 
 .bg-gradient-mesh {
@@ -251,21 +281,22 @@ button {
 
 /* Animated gradient backgrounds */
 @keyframes gradientShift {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
 }
 
 .bg-gradient-animate {
-  background: linear-gradient(
-    270deg,
-    var(--accent-primary),
-    var(--accent-secondary),
-    var(--accent-primary)
-  );
+  background: linear-gradient(270deg,
+      var(--accent-primary),
+      var(--accent-secondary),
+      var(--accent-primary));
   background-size: 200% 200%;
   animation: gradientShift 8s ease infinite;
 }
@@ -286,9 +317,12 @@ button {
 
 /* Pulse animation */
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
   }
+
   50% {
     box-shadow: 0 0 40px rgba(0, 212, 170, 0.6);
   }
@@ -303,6 +337,7 @@ button {
   0% {
     background-position: 0% 50%;
   }
+
   100% {
     background-position: 200% 50%;
   }
@@ -320,29 +355,55 @@ button {
   position: absolute;
   inset: -2px;
   border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    var(--accent-primary),
-    var(--accent-secondary),
-    var(--accent-primary)
-  );
+  background: linear-gradient(90deg,
+      var(--accent-primary),
+      var(--accent-secondary),
+      var(--accent-primary));
   background-size: 200% 100%;
   animation: border-flow 3s linear infinite;
   z-index: -1;
 }
 
 /* Utility classes for spacing */
-.spacing-xs { margin: 0.5rem; }
-.spacing-sm { margin: 1rem; }
-.spacing-md { margin: 1.5rem; }
-.spacing-lg { margin: 2rem; }
-.spacing-xl { margin: 3rem; }
+.spacing-xs {
+  margin: 0.5rem;
+}
 
-.gap-xs { gap: 0.5rem; }
-.gap-sm { gap: 1rem; }
-.gap-md { gap: 1.5rem; }
-.gap-lg { gap: 2rem; }
-.gap-xl { gap: 3rem; }
+.spacing-sm {
+  margin: 1rem;
+}
+
+.spacing-md {
+  margin: 1.5rem;
+}
+
+.spacing-lg {
+  margin: 2rem;
+}
+
+.spacing-xl {
+  margin: 3rem;
+}
+
+.gap-xs {
+  gap: 0.5rem;
+}
+
+.gap-sm {
+  gap: 1rem;
+}
+
+.gap-md {
+  gap: 1.5rem;
+}
+
+.gap-lg {
+  gap: 2rem;
+}
+
+.gap-xl {
+  gap: 3rem;
+}
 
 /* Improved button styles */
 .btn-primary {

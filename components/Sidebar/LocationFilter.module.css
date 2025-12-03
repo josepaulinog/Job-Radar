@@ -1,26 +1,28 @@
 .container {
-    background: var(--bg-secondary);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.25rem;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
-.header {
+.cardHeader {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cardTitle {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1rem;
 }
 
-.icon {
-    font-size: 1.25rem;
-}
-
-.header h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
+.cardBody {
+    padding: 1.5rem;
 }
 
 .select {

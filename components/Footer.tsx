@@ -57,13 +57,13 @@ export default function Footer() {
             <span>Open Source • MIT License</span>
           </div>
           <div className={styles.footerSocial}>
-            <a href="https://github.com/josepaulino" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <a href="https://github.com/josepaulinog" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <Github size={20} />
             </a>
             <a href="https://twitter.com/josepaulinog" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
               <Twitter size={20} />
             </a>
-            <a href="https://linkedin.com/in/josepaulino" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <a href="https://linkedin.com/in/josepaulinog" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <Linkedin size={20} />
             </a>
           </div>

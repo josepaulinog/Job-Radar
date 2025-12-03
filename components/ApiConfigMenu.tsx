@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Key, Search, Save, Settings } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Settings, Key, Search, Save, X } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useToast } from '@/hooks/useToast';
 import Toast from '@/components/Toast';
@@ -9,48 +9,77 @@ import styles from './ApiConfigMenu.module.css';
 
 export default function ApiConfigMenu() {
     const [isOpen, setIsOpen] = useState(false);
-    const [apiKey, setApiKey] = useLocalStorage('jobhunter_api_key', '');
-    const [cxId, setCxId] = useLocalStorage('jobhunter_cx_id', '');
+    const [mounted, setMounted] = useState(false);
+    const [apiKey, setApiKey] = useLocalStorage('googleApiKey', '');
+    const [searchEngineId, setSearchEngineId] = useLocalStorage('searchEngineId', '');
+    const [localApiKey, setLocalApiKey] = useState('');
+    const [localCxId, setLocalCxId] = useState('');
     const { toast, isVisible, showToast } = useToast();
-
-    const [localApiKey, setLocalApiKey] = useState(apiKey);
-    const [localCxId, setLocalCxId] = useState(cxId);
-
     const menuRef = useRef<HTMLDivElement>(null);
 
-    // Sync local state when storage changes (from other components)
     useEffect(() => {
         setLocalApiKey(apiKey);
-        setLocalCxId(cxId);
-    }, [apiKey, cxId]);
+        setLocalCxId(searchEngineId);
+    }, [apiKey, searchEngineId]);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
 
     const handleSave = () => {
         setApiKey(localApiKey.trim());
-        setCxId(localCxId.trim());
+        setSearchEngineId(localCxId.trim());
         setIsOpen(false);
         showToast('API credentials saved successfully');
     };
 
-    const isConfigured = !!(apiKey && cxId);
+    const isConfigured = apiKey && searchEngineId;
+
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <div className={styles.menuContainer} ref={menuRef}>
             <button
-                className={`${styles.triggerBtn} ${isConfigured ? styles.ready : ''}`}
                 onClick={() => setIsOpen(!isOpen)}
+                className={`${styles.triggerBtn} ${isConfigured ? styles.ready : ''}`}
                 title="Configure API Credentials"
             >
                 <span className={styles.dot} />
-                <span>{isConfigured ? 'API Ready' : 'Setup API'}</span>
+                API {isConfigured ? 'Ready' : 'Setup'}
             </button>
 
             {isOpen && (
                 <>
                     <div className={styles.overlay} onClick={() => setIsOpen(false)} />
-                    <div className={styles.dropdown}>
+                    <div className={`${styles.dropdown} ${isOpen ? styles.open : ''}`}>
                         <div className={styles.header}>
-                            <Settings size={16} />
+                            <Settings size={18} />
                             API Configuration
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className={styles.closeBtn}
+                                aria-label="Close"
+                            >
+                                <X size={20} />
+                            </button>
                         </div>
 
                         <div className={styles.field}>

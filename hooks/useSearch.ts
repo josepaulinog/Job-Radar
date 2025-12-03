@@ -160,8 +160,8 @@ export function useSearch(): UseSearchReturn {
           query,
           startIndex,
           dateRestrict,
-          // Additional params for batch search and result processing
-          useBatchSearch: true,
+          // Batch search disabled to respect strategy-specific queries
+          useBatchSearch: false,
           keywords: sanitizedKeywords,
           location: sanitizedLocation,
           exclusions: sanitizedExclusions

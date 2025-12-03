@@ -9,8 +9,8 @@ interface BlogGridProps {
 export default function BlogGrid({ posts }: BlogGridProps) {
   return (
     <div className={styles.postsGrid}>
-      {posts.map((post) => (
-        <BlogCard key={post.slug} post={post} />
+      {posts.map((post, index) => (
+        <BlogCard key={post.slug} post={post} index={index} />
       ))}
     </div>
   );

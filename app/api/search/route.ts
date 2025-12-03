@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       query,
       startIndex,
       dateRestrict,
-      useBatchSearch = true,
+      useBatchSearch = false, // Disabled by default to respect strategy-specific queries
       keywords,
       location,
       exclusions

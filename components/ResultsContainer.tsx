@@ -70,6 +70,7 @@ export default function ResultsContainer({
               <JobCard
                 key={`${job.link}-${index}`}
                 job={job}
+                index={index}
                 isFavorite={isFavorite(job.link)}
                 onToggleFavorite={onToggleFavorite}
               />
