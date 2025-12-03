@@ -1,6 +1,19 @@
 import { StrategyType, Location } from './types';
 
-// Comprehensive list of ATS platforms and job sites
+// Top ATS platforms (most popular, best quality results)
+// Limiting to 8 platforms to avoid Google query issues with too many OR operators
+export const topATS = [
+  'greenhouse.io',
+  'lever.co',
+  'ashbyhq.com',
+  'workable.com',
+  'smartrecruiters.com',
+  'myworkdayjobs.com',
+  'icims.com',
+  'taleo.net',
+];
+
+// Comprehensive list of ATS platforms and job sites (for reference)
 export const atsPlatforms = [
   // Major ATS platforms
   'greenhouse.io',
@@ -25,13 +38,10 @@ export const atsPlatforms = [
   'fountain.com',
 
   // Modern/newer ATS platforms
-  'rippling.com/careers',
-  'gusto.com/careers',
-  'personio.com/jobs',
+  'rippling.com',
+  'gusto.com',
+  'personio.com',
   'teamtailor.com',
-  'breezy.hr',
-  'workday.wd1.myworkdayjobs.com',
-  'workday.wd5.myworkdayjobs.com',
   'wd1.myworkdayjobs.com',
   'wd5.myworkdayjobs.com',
   'applytojob.com',
@@ -48,38 +58,38 @@ export const atsPlatforms = [
   'amazon.jobs',
   'careers.microsoft.com',
   'careers.google.com',
-  'facebook.com/careers',
-  'meta.com/careers',
+  'facebook.com',
+  'meta.com',
   'netflix.jobs',
-  'tesla.com/careers',
-  'stripe.com/jobs',
-  'shopify.com/careers',
-  'airbnb.com/careers',
-  'uber.com/careers',
-  'spotify.com/jobs',
-  'snap.com/jobs',
-  'twitter.com/careers',
-  'linkedin.com/jobs',
-  'paypal.com/jobs',
-  'salesforce.com/careers',
-  'adobe.com/careers',
-  'oracle.com/careers',
-  'vmware.com/careers',
-  'atlassian.com/company/careers',
-  'zoom.us/careers',
-  'dropbox.com/jobs',
-  'twilio.com/company/jobs',
-  'datadog.com/careers',
-  'mongodb.com/careers',
-  'elastic.co/careers',
-  'confluent.io/careers',
-  'databricks.com/company/careers',
-  'notion.so/careers',
-  'figma.com/careers',
-  'canva.com/careers',
-  'miro.com/careers',
-  'airtable.com/careers',
-  'retool.com/careers'
+  'tesla.com',
+  'stripe.com',
+  'shopify.com',
+  'airbnb.com',
+  'uber.com',
+  'spotify.com',
+  'snap.com',
+  'twitter.com',
+  'linkedin.com',
+  'paypal.com',
+  'salesforce.com',
+  'adobe.com',
+  'oracle.com',
+  'vmware.com',
+  'atlassian.com',
+  'zoom.us',
+  'dropbox.com',
+  'twilio.com',
+  'datadog.com',
+  'mongodb.com',
+  'elastic.co',
+  'confluent.io',
+  'databricks.com',
+  'notion.so',
+  'figma.com',
+  'canva.com',
+  'miro.com',
+  'airtable.com',
+  'retool.com'
 ];
 
 // Job boards and communities
@@ -184,20 +194,19 @@ export interface EnhancedSearchStrategy {
 export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
   ats: {
     name: 'ATS X-Ray',
-    description: 'Greenhouse, Lever, Workable + 80 more',
+    description: 'Top 8 ATS Platforms (Greenhouse, Lever, etc.)',
     icon: 'database',
     color: 'blue',
     category: 'ats',
     buildQuery: (keywords: string, exclusions: string, location?: string) => {
-      // Use top 40 ATS platforms for better coverage without exceeding query length limits
-      const topATS = atsPlatforms.slice(0, 40);
+      // Use only top 8 ATS platforms to avoid Google query issues with too many OR operators
       const sites = topATS.map(ats => `site:${ats}`).join(' OR ');
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -225,8 +234,8 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         '-site:monster.com'
       ].join(' ');
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -255,7 +264,7 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         loc = ` "${location}"`;
       }
 
-      return `(${sites}) "${keywords}" remote${loc}${exclude}`;
+      return `(${sites}) "${keywords}" "remote"${loc}${exclude}`;
     }
   },
 
@@ -271,21 +280,21 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         'site:jobs.apple.com',
         'site:amazon.jobs',
         'site:careers.microsoft.com',
-        'site:facebook.com/careers',
+        'site:facebook.com',
         'site:netflix.jobs',
-        'site:tesla.com/careers',
-        'site:stripe.com/jobs',
-        'site:shopify.com/careers',
-        'site:airbnb.com/careers',
-        'site:uber.com/careers',
-        'site:spotify.com/jobs'
+        'site:tesla.com',
+        'site:stripe.com',
+        'site:shopify.com',
+        'site:airbnb.com',
+        'site:uber.com',
+        'site:spotify.com'
       ].join(' OR ');
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -312,8 +321,8 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -333,8 +342,8 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -354,8 +363,8 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -378,14 +387,14 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         'site:wellfound.com',
         'site:startupjobs.com',
         'site:startupjobs.asia',
-        'site:eu-startups.com/jobs'
+        'site:eu-startups.com'
       ].join(' OR ');
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
@@ -443,8 +452,8 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
-      // Always quote location for exact matching
-      let loc = ' remote';
+      // Always quote location for exact matching, including "remote"
+      let loc = ' "remote"';
       if (location && location !== 'remote') {
         loc = ` "${location}"`;
       }
