@@ -41,7 +41,6 @@ export default function HomePage() {
   const [location, setLocation] = useState('');
 
   // Filter state
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedWorkLocations, setSelectedWorkLocations] = useState<WorkLocationType[]>([]);
 
   // UI state
@@ -169,16 +168,9 @@ export default function HomePage() {
   const apiConfigured = !!(apiKey && cxId);
   const hasSearched = search.results.length > 0 || search.error !== null;
 
-  // Filter results based on selected categories and work locations
+  // Filter results based on work locations
   const filteredResults = useMemo(() => {
     let filtered = search.results;
-
-    // Filter by categories if any are selected
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter(job =>
-        job.category && selectedCategories.includes(job.category)
-      );
-    }
 
     // Filter by work locations if any are selected
     if (selectedWorkLocations.length > 0) {
@@ -188,7 +180,7 @@ export default function HomePage() {
     }
 
     return filtered;
-  }, [search.results, selectedCategories, selectedWorkLocations]);
+  }, [search.results, selectedWorkLocations]);
 
   return (
     <div className={styles.container}>
@@ -202,14 +194,12 @@ export default function HomePage() {
           location={location}
           query={query}
           googleUrl={googleUrl}
-          selectedCategories={selectedCategories}
           selectedWorkLocations={selectedWorkLocations}
           onKeywordsChange={setKeywords}
           onExclusionsChange={setExclusions}
           onDateChange={setDateRestrict}
           onStrategySelect={handleStrategySelect}
           onLocationChange={setLocation}
-          onCategoriesChange={setSelectedCategories}
           onWorkLocationsChange={setSelectedWorkLocations}
           onSearch={handleSearch}
           onCopyQuery={handleCopyQuery}

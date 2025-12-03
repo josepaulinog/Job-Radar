@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useRef, useEffect } from 'react';
 import { Filter, Search } from 'lucide-react';
 import { DateRestrict } from '@/lib/types';
+import { filterJobTitles } from '@/lib/job-titles';
 import styles from './SearchFilters.module.css';
 
 interface SearchFiltersProps {
@@ -30,6 +32,76 @@ export default function SearchFilters({
   onDateChange,
   onSearch
 }: SearchFiltersProps) {
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+
+  // Update suggestions when keywords change
+  useEffect(() => {
+    const filtered = filterJobTitles(keywords, 8);
+    setSuggestions(filtered);
+    setActiveSuggestionIndex(-1);
+  }, [keywords]);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node) &&
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || suggestions.length === 0) {
+      if (e.key === 'Enter') {
+        onSearch();
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActiveSuggestionIndex(prev =>
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActiveSuggestionIndex(prev => (prev > 0 ? prev - 1 : -1));
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (activeSuggestionIndex >= 0) {
+          onKeywordsChange(suggestions[activeSuggestionIndex]);
+          setShowSuggestions(false);
+        } else {
+          onSearch();
+        }
+        break;
+      case 'Escape':
+        setShowSuggestions(false);
+        break;
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    onKeywordsChange(suggestion);
+    setShowSuggestions(false);
+    inputRef.current?.focus();
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
@@ -41,13 +113,35 @@ export default function SearchFilters({
       <div className={styles.cardBody}>
         <div className={styles.searchField}>
           <label className={styles.fieldLabel}>Job Title / Keywords</label>
-          <input
-            type="text"
-            className={styles.searchInput}
-            value={keywords}
-            onChange={(e) => onKeywordsChange(e.target.value)}
-            placeholder="e.g. React Developer, UX Designer"
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              ref={inputRef}
+              type="text"
+              className={styles.searchInput}
+              value={keywords}
+              onChange={(e) => onKeywordsChange(e.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              onKeyDown={handleKeyDown}
+              placeholder="e.g. React Developer, UX Designer"
+              autoComplete="off"
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <div ref={suggestionsRef} className={styles.autocomplete}>
+                {suggestions.map((suggestion, index) => (
+                  <div
+                    key={suggestion}
+                    className={`${styles.suggestion} ${
+                      index === activeSuggestionIndex ? styles.active : ''
+                    }`}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    onMouseEnter={() => setActiveSuggestionIndex(index)}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className={styles.searchField}>
