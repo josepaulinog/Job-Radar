@@ -1,13 +1,9 @@
-'use client';
-
-import { useRef, useEffect } from 'react';
 import { GoogleSearchItem, SearchError } from '@/lib/types';
 import ResultsHeader from './Results/ResultsHeader';
 import JobCard from './Results/JobCard';
 import EmptyState from './Results/EmptyState';
 import LoadingState from './Results/LoadingState';
 import ErrorState from './Results/ErrorState';
-import { staggerChildren } from '@/lib/gsap-animations';
 import styles from './ResultsContainer.module.css';
 
 interface ResultsContainerProps {
@@ -39,19 +35,6 @@ export default function ResultsContainer({
   onToggleFavorite,
   onPageChange,
 }: ResultsContainerProps) {
-  const resultsRef = useRef<HTMLDivElement>(null);
-
-  // Animate results when they load
-  useEffect(() => {
-    if (!isLoading && results.length > 0 && resultsRef.current) {
-      staggerChildren(resultsRef.current, '.job-card-item', {
-        duration: 0.5,
-        stagger: 0.08,
-        y: 30,
-      });
-    }
-  }, [results, isLoading]);
-
   return (
     <section className={styles.resultsArea}>
       <ResultsHeader
@@ -61,7 +44,7 @@ export default function ResultsContainer({
         onPageChange={onPageChange}
       />
 
-      <div ref={resultsRef} className={styles.resultsContainer}>
+      <div className={styles.resultsContainer}>
         {/* Loading State */}
         {isLoading && <LoadingState />}
 
