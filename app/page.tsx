@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { StrategyType, DateRestrict, GoogleSearchItem } from '@/lib/types';
 import { getStrategyQuery, getGoogleSearchUrl } from '@/lib/enhanced-strategies';
 import { WorkLocationType } from '@/lib/work-location';
@@ -17,7 +17,6 @@ import {
   trackFavoriteRemoved,
   trackError
 } from '@/lib/analytics';
-import { pageTransitionIn } from '@/lib/gsap-animations';
 
 // Components
 import Toast from '@/components/Toast';
@@ -57,11 +56,6 @@ export default function HomePage() {
 
   // Toast hook
   const { toast, isVisible, showToast } = useToast();
-
-  // Page transition animation
-  useEffect(() => {
-    pageTransitionIn({ duration: 0.8 });
-  }, []);
 
   // Update query preview when inputs change
   useEffect(() => {
