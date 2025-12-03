@@ -119,3 +119,42 @@
 .searchBtn:active {
   transform: translateY(0);
 }
+
+/* Autocomplete Styles */
+.autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.suggestion {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion:last-child {
+  border-bottom: none;
+}
+
+.suggestion:hover,
+.suggestion.active {
+  background: var(--bg-secondary);
+  color: var(--accent-primary);
+}
+
+.suggestion.active {
+  background: linear-gradient(90deg, var(--bg-secondary), transparent);
+}
