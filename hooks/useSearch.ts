@@ -159,7 +159,12 @@ export function useSearch(): UseSearchReturn {
           cxId,
           query,
           startIndex,
-          dateRestrict
+          dateRestrict,
+          // Additional params for batch search and result processing
+          useBatchSearch: true,
+          keywords: sanitizedKeywords,
+          location: sanitizedLocation,
+          exclusions: sanitizedExclusions
         }),
         signal: abortController.signal
       });

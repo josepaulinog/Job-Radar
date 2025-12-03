@@ -1,17 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SearchRequest, GoogleSearchResponse } from '@/lib/types';
+import { batchSearch, executeSearchWithRetry } from '@/lib/batch-search';
+import { processResults } from '@/lib/result-processing';
 
 /**
  * API Route for Google Custom Search
  * Handles search requests and communicates with Google Custom Search API
  *
+ * Features:
+ * - Batch search across multiple ATS platforms
+ * - Smart deduplication and result ranking
+ * - Exponential backoff retry for rate limits
+ * - Result processing and scoring
+ *
  * Security: API keys are passed from client but never stored on server
- * Performance: Direct passthrough to Google API with minimal processing
+ * Performance: Parallel batch searches with intelligent result processing
  */
 export async function POST(request: NextRequest) {
   try {
-    const body: SearchRequest = await request.json();
-    const { apiKey, cxId, query, startIndex, dateRestrict } = body;
+    const body: SearchRequest & {
+      useBatchSearch?: boolean;
+      keywords?: string;
+      location?: string;
+      exclusions?: string;
+    } = await request.json();
+
+    const {
+      apiKey,
+      cxId,
+      query,
+      startIndex,
+      dateRestrict,
+      useBatchSearch = true,
+      keywords,
+      location,
+      exclusions
+    } = body;
 
     // Validate required parameters
     if (!apiKey || !cxId || !query) {
@@ -24,75 +48,80 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate startIndex
-    if (startIndex < 1 || startIndex > 91) {
-      return NextResponse.json(
-        {
-          error: 'Invalid Parameters',
-          message: 'Start index must be between 1 and 91'
-        },
-        { status: 400 }
-      );
-    }
+    // Use batch search for first page (startIndex === 1) to get comprehensive results
+    // For pagination, use regular search
+    if (useBatchSearch && startIndex === 1) {
+      console.log('Using batch search mode');
 
-    // Build Google Custom Search API URL
-    const params = new URLSearchParams({
-      key: apiKey,
-      cx: cxId,
-      q: query,
-      start: startIndex.toString(),
-      num: '10'
-    });
+      try {
+        const batchResult = await batchSearch(
+          apiKey,
+          cxId,
+          keywords || query,
+          location,
+          exclusions,
+          dateRestrict
+        );
 
-    // Add optional date restriction
-    if (dateRestrict && ['d1', 'w1', 'm1'].includes(dateRestrict)) {
-      params.append('dateRestrict', dateRestrict);
-    }
+        // Process results: deduplicate and rank
+        const processedItems = processResults(
+          batchResult.items,
+          keywords || query,
+          location
+        );
 
-    const googleApiUrl = `https://www.googleapis.com/customsearch/v1?${params}`;
+        // Build response matching Google API format
+        const response: GoogleSearchResponse = {
+          kind: 'customsearch#search',
+          url: { type: 'application/json', template: '' },
+          queries: {
+            request: [{
+              title: 'Google Custom Search',
+              totalResults: batchResult.totalResults.toString(),
+              searchTerms: query,
+              count: processedItems.length,
+              startIndex: 1,
+              inputEncoding: 'utf8',
+              outputEncoding: 'utf8',
+              safe: 'off',
+              cx: cxId
+            }]
+          },
+          context: { title: 'JobRadar' },
+          searchInformation: {
+            searchTime: 0.5,
+            formattedSearchTime: '0.50',
+            totalResults: batchResult.totalResults.toString(),
+            formattedTotalResults: batchResult.totalResults.toLocaleString()
+          },
+          items: processedItems
+        };
 
-    // Make request to Google Custom Search API
-    const response = await fetch(googleApiUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-      // Add timeout for better UX
-      signal: AbortSignal.timeout(10000) // 10 second timeout
-    });
-
-    // Handle non-OK responses from Google API
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-
-      // Map Google API errors to user-friendly messages
-      let errorMessage = errorData.error?.message || `Google API Error: ${response.status}`;
-      let errorDetails = '';
-
-      if (response.status === 400) {
-        if (errorMessage.includes('API key')) {
-          errorDetails = 'Invalid API key. Please check your credentials.';
-        } else if (errorMessage.includes('cx')) {
-          errorDetails = 'Invalid Search Engine ID (CX). Please check your credentials.';
-        }
-      } else if (response.status === 403) {
-        errorDetails = 'API access forbidden. Please check your API key permissions.';
-      } else if (response.status === 429) {
-        errorDetails = 'Rate limit exceeded. You have used your daily quota of 100 searches.';
+        return NextResponse.json(response, {
+          status: 200,
+          headers: {
+            'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+            'X-Batch-Search': 'true',
+            'X-Batches-Executed': batchResult.batches.toString()
+          }
+        });
+      } catch (batchError) {
+        console.error('Batch search failed, falling back to regular search:', batchError);
+        // Fall through to regular search
       }
-
-      return NextResponse.json(
-        {
-          error: 'Google API Error',
-          message: errorMessage,
-          details: errorDetails
-        },
-        { status: response.status }
-      );
     }
 
-    // Parse and return successful response
-    const data: GoogleSearchResponse = await response.json();
+    // Regular search (for pagination or if batch search fails)
+    console.log('Using regular search mode');
+
+    // Use retry logic for regular search
+    const data = await executeSearchWithRetry(
+      apiKey,
+      cxId,
+      query,
+      startIndex,
+      dateRestrict
+    );
 
     // Return the data to client
     return NextResponse.json(data, {
