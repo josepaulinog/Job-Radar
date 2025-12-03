@@ -149,3 +149,49 @@ export function generateExcerpt(content: string, length: number = 160): string {
 
   return plainText.substring(0, length).trim() + '...';
 }
+
+/**
+ * Heading interface for table of contents
+ */
+export interface Heading {
+  id: string;
+  text: string;
+  level: number;
+}
+
+/**
+ * Extract headings from markdown content for table of contents
+ */
+export function extractHeadings(content: string): Heading[] {
+  const headings: Heading[] = [];
+  const lines = content.split('\n');
+
+  lines.forEach((line) => {
+    const match = line.match(/^(#{1,6})\s+(.+)$/);
+    if (match) {
+      const level = match[1].length;
+      const text = match[2].trim();
+      const id = text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-');
+
+      headings.push({ id, text, level });
+    }
+  });
+
+  return headings;
+}
+
+/**
+ * Add IDs to markdown headings for anchor links
+ */
+export function addHeadingIds(content: string): string {
+  return content.replace(/^(#{1,6})\s+(.+)$/gm, (match, hashes, text) => {
+    const id = text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-');
+    return `${hashes} ${text} {#${id}}`;
+  });
+}

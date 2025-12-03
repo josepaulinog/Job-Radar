@@ -76,6 +76,9 @@ export interface GoogleSearchItem {
   formattedUrl: string;
   htmlFormattedUrl: string;
   pagemap?: Record<string, any>;
+  // Enhanced metadata
+  category?: string;
+  workLocation?: 'remote' | 'hybrid' | 'onsite' | 'unknown';
 }
 
 export interface GoogleSearchResponse {

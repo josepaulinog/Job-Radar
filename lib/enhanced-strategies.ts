@@ -2,6 +2,7 @@ import { StrategyType, Location } from './types';
 
 // Comprehensive list of ATS platforms and job sites
 export const atsPlatforms = [
+  // Major ATS platforms
   'greenhouse.io',
   'lever.co',
   'workable.com',
@@ -22,12 +23,33 @@ export const atsPlatforms = [
   'comeet.com',
   'freshteam.com',
   'fountain.com',
+
+  // Modern/newer ATS platforms
+  'rippling.com/careers',
+  'gusto.com/careers',
+  'personio.com/jobs',
+  'teamtailor.com',
+  'breezy.hr',
+  'workday.wd1.myworkdayjobs.com',
+  'workday.wd5.myworkdayjobs.com',
+  'wd1.myworkdayjobs.com',
+  'wd5.myworkdayjobs.com',
+  'applytojob.com',
+  'hrmdirect.com',
+  'paylocity.com',
+  'namely.com',
+  'ceridian.com',
+  'adp.com',
+  'paychex.com',
+
+  // Tech company career pages
   'hire.google.com',
   'jobs.apple.com',
   'amazon.jobs',
   'careers.microsoft.com',
   'careers.google.com',
   'facebook.com/careers',
+  'meta.com/careers',
   'netflix.jobs',
   'tesla.com/careers',
   'stripe.com/jobs',
@@ -51,27 +73,55 @@ export const atsPlatforms = [
   'mongodb.com/careers',
   'elastic.co/careers',
   'confluent.io/careers',
-  'databricks.com/company/careers'
+  'databricks.com/company/careers',
+  'notion.so/careers',
+  'figma.com/careers',
+  'canva.com/careers',
+  'miro.com/careers',
+  'airtable.com/careers',
+  'retool.com/careers'
 ];
 
 // Job boards and communities
 export const jobBoards = [
+  // Top remote job boards
   'weworkremotely.com',
   'remotive.io',
   'remote.co',
   'flexjobs.com',
+  'remoteok.io',
+  'remoteco.com',
+  'himalayas.app',
+  'wellfound.com',
+
+  // Startup and tech job boards
   'angel.co',
   'ycombinator.com/jobs',
+  'ycombinator.com/companies',
+  'workatastartup.com',
+  'angellist.com',
+  'startupjobs.com',
+
+  // Developer job boards
   'stackoverflow.com/jobs',
   'github.com/jobs',
+  'dev.to/jobs',
+  'codepen.io/jobs',
+  'hashjob.com',
+  'relocate.me',
+
+  // Design job boards
   'dribbble.com/jobs',
   'behance.net/joblist',
+  'cofolios.com/jobs',
+  'uxjobsboard.com',
+
+  // General job boards
   'authenticjobs.com',
   'landing.jobs',
   'nodesk.co/remote-jobs',
   'remoteleaf.com',
   'jobspresso.co',
-  'remoteok.io',
   'outsourcely.com',
   'powertofly.com',
   'remoters.net',
@@ -81,10 +131,19 @@ export const jobBoards = [
   'remotehub.io',
   'dynamitejobs.com',
   'europelanguagejobs.com',
-  'remoteco.com',
-  'himalayas.app',
   'pangian.com',
-  'wellfound.com'
+
+  // Niche and specialized boards
+  'skipthedrive.com',
+  'virtualvocations.com',
+  'remotewoman.com',
+  'workfromhomejobs.com',
+  'dailyremote.com',
+  'remoteleads.io',
+  'findremotework.com',
+  'remote.tools/jobs',
+  'nocommutejobs.com',
+  'workremote.cc'
 ];
 
 // Location-based search
@@ -125,12 +184,13 @@ export interface EnhancedSearchStrategy {
 export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
   ats: {
     name: 'ATS X-Ray',
-    description: 'Greenhouse, Lever, Workable + 50 more',
+    description: 'Greenhouse, Lever, Workable + 80 more',
     icon: 'database',
     color: 'blue',
     category: 'ats',
     buildQuery: (keywords: string, exclusions: string, location?: string) => {
-      const topATS = atsPlatforms.slice(0, 30);
+      // Use top 40 ATS platforms for better coverage without exceeding query length limits
+      const topATS = atsPlatforms.slice(0, 40);
       const sites = topATS.map(ats => `site:${ats}`).join(' OR ');
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
@@ -173,12 +233,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
 
   jobBoards: {
     name: 'Remote Job Boards',
-    description: 'WeWorkRemotely, Remote.co + 25 more',
+    description: 'WeWorkRemotely, Remote.co + 50 more',
     icon: 'globe',
     color: 'pink',
     category: 'boards',
     buildQuery: (keywords: string, exclusions: string, location?: string) => {
-      const topBoards = jobBoards.slice(0, 10);
+      // Use top 15 job boards for better coverage
+      const topBoards = jobBoards.slice(0, 15);
       const sites = topBoards.map(board => `site:${board}`).join(' OR ');
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
@@ -264,8 +325,154 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       }
       return `(filetype:pdf OR filetype:doc) (intitle:"job description" OR intitle:"job posting" OR intitle:"hiring") "${keywords}"${loc}${exclude}`;
     }
+  },
+
+  linkedin: {
+    name: 'LinkedIn X-Ray',
+    description: 'Find jobs via LinkedIn profile search',
+    icon: 'linkedin',
+    color: 'blue',
+    category: 'boards',
+    buildQuery: (keywords: string, exclusions: string, location?: string) => {
+      const exclude = exclusions.trim()
+        ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
+        : '';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
+      return `site:linkedin.com/jobs "${keywords}"${loc} (inurl:view OR inurl:jobs)${exclude}`;
+    }
+  },
+
+  startups: {
+    name: 'Startup Jobs',
+    description: 'YC, AngelList, early-stage startups',
+    icon: 'rocket',
+    color: 'orange',
+    category: 'companies',
+    buildQuery: (keywords: string, exclusions: string, location?: string) => {
+      const sites = [
+        'site:ycombinator.com/companies',
+        'site:workatastartup.com',
+        'site:angel.co',
+        'site:wellfound.com',
+        'site:startupjobs.com',
+        'site:startupjobs.asia',
+        'site:eu-startups.com/jobs'
+      ].join(' OR ');
+      const exclude = exclusions.trim()
+        ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
+        : '';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
+      return `(${sites}) "${keywords}"${loc}${exclude}`;
+    }
+  },
+
+  freelance: {
+    name: 'Freelance/Contract',
+    description: 'Contract, freelance opportunities',
+    icon: 'briefcase',
+    color: 'green',
+    category: 'boards',
+    buildQuery: (keywords: string, exclusions: string, location?: string) => {
+      const sites = [
+        'site:upwork.com',
+        'site:freelancer.com',
+        'site:toptal.com',
+        'site:gun.io',
+        'site:weworkremotely.com',
+        'site:remoteok.io',
+        'site:contra.com'
+      ].join(' OR ');
+      const exclude = exclusions.trim()
+        ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
+        : '';
+      let loc = '';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
+      return `(${sites}) "${keywords}" (freelance OR contract OR contractor)${loc}${exclude}`;
+    }
+  },
+
+  web3: {
+    name: 'Web3 & Crypto',
+    description: 'Blockchain, crypto, Web3 jobs',
+    icon: 'coins',
+    color: 'yellow',
+    category: 'boards',
+    buildQuery: (keywords: string, exclusions: string, location?: string) => {
+      const sites = [
+        'site:crypto.jobs',
+        'site:cryptocurrencyjobs.co',
+        'site:web3.career',
+        'site:cryptojobslist.com',
+        'site:remote3.co',
+        'site:usebraintrust.com'
+      ].join(' OR ');
+      const exclude = exclusions.trim()
+        ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
+        : '';
+      let loc = ' remote';
+      if (location && location !== 'remote') {
+        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+      }
+      return `(${sites}) "${keywords}"${loc}${exclude}`;
+    }
   }
 };
+
+/**
+ * Helper function to process keywords with boolean operators
+ * Supports: AND, OR, quotes for exact match
+ */
+export function processKeywords(keywords: string): string {
+  // If keywords already contain boolean operators, return as-is
+  if (keywords.match(/\bAND\b|\bOR\b/i)) {
+    return keywords;
+  }
+
+  // If keywords contain quotes, preserve them
+  if (keywords.includes('"')) {
+    return keywords;
+  }
+
+  // For simple keywords, wrap in quotes for exact match
+  return `"${keywords}"`;
+}
+
+/**
+ * Helper function to build exclusion query
+ */
+export function buildExclusionQuery(exclusions: string): string {
+  if (!exclusions.trim()) return '';
+
+  return ' ' + exclusions
+    .split(',')
+    .map(e => e.trim())
+    .filter(e => e.length > 0)
+    .map(e => {
+      // If exclusion contains spaces, wrap in quotes
+      return e.includes(' ') ? `-"${e}"` : `-${e}`;
+    })
+    .join(' ');
+}
+
+/**
+ * Helper function to build location query
+ */
+export function buildLocationQuery(location?: string, defaultRemote: boolean = true): string {
+  if (!location || location === 'remote') {
+    return defaultRemote ? ' remote' : '';
+  }
+
+  // Quote multi-word locations
+  return location.includes(' ') ? ` "${location}"` : ` ${location}`;
+}
 
 export function getStrategyQuery(
   strategyType: string,

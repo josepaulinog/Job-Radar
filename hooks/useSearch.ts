@@ -8,6 +8,8 @@ import {
   sanitizeExclusions,
   sanitizeLocation
 } from '@/lib/validation';
+import { detectJobCategory } from '@/lib/job-categories';
+import { detectWorkLocation } from '@/lib/work-location';
 
 export interface UseSearchState {
   results: GoogleSearchItem[];
@@ -180,9 +182,16 @@ export function useSearch(): UseSearchReturn {
         return;
       }
 
+      // Enrich results with metadata (category and work location)
+      const enrichedResults = (data.items || []).map((item: GoogleSearchItem) => ({
+        ...item,
+        category: detectJobCategory(item.title, item.snippet),
+        workLocation: detectWorkLocation(item.title, item.snippet),
+      }));
+
       setState(prev => ({
         ...prev,
-        results: data.items || [],
+        results: enrichedResults,
         totalResults: parseInt(data.searchInformation?.totalResults || '0'),
         isLoading: false,
         error: null
