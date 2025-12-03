@@ -196,12 +196,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
 
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        // Only quote multi-word locations to be less strict
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
 
+      // Don't add intitle/inurl when using site: operators - they conflict
       return `(${sites}) "${keywords}"${loc}${exclude}`;
     }
   },
@@ -223,10 +224,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
         '-site:ziprecruiter.com',
         '-site:monster.com'
       ].join(' ');
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(intitle:"careers" OR intitle:"jobs" OR inurl:careers OR inurl:jobs) "${keywords}"${loc}${exclude} ${excludeSites}`;
     }
   },
@@ -244,10 +248,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = '';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(${sites}) "${keywords}" remote${loc}${exclude}`;
     }
   },
@@ -276,10 +283,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(${techGiants}) "${keywords}"${loc}${exclude}`;
     }
   },
@@ -301,10 +311,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(${sites}) ("hiring" OR "job") "${keywords}"${loc}${exclude}`;
     }
   },
@@ -319,10 +332,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(filetype:pdf OR filetype:doc) (intitle:"job description" OR intitle:"job posting" OR intitle:"hiring") "${keywords}"${loc}${exclude}`;
     }
   },
@@ -337,10 +353,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `site:linkedin.com/jobs "${keywords}"${loc} (inurl:view OR inurl:jobs)${exclude}`;
     }
   },
@@ -364,10 +383,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(${sites}) "${keywords}"${loc}${exclude}`;
     }
   },
@@ -391,10 +413,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = '';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(${sites}) "${keywords}" (freelance OR contract OR contractor)${loc}${exclude}`;
     }
   },
@@ -417,10 +442,13 @@ export const enhancedStrategies: Record<string, EnhancedSearchStrategy> = {
       const exclude = exclusions.trim()
         ? ' ' + exclusions.split(',').map(e => `-"${e.trim()}"`).join(' ')
         : '';
+
+      // Always quote location for exact matching
       let loc = ' remote';
       if (location && location !== 'remote') {
-        loc = location.includes(' ') ? ` "${location}"` : ` ${location}`;
+        loc = ` "${location}"`;
       }
+
       return `(${sites}) "${keywords}"${loc}${exclude}`;
     }
   }
@@ -470,8 +498,8 @@ export function buildLocationQuery(location?: string, defaultRemote: boolean = t
     return defaultRemote ? ' remote' : '';
   }
 
-  // Quote multi-word locations
-  return location.includes(' ') ? ` "${location}"` : ` ${location}`;
+  // Always quote locations for exact matching
+  return ` "${location}"`;
 }
 
 export function getStrategyQuery(
